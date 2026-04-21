@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun, Flame, Menu, X, ShoppingBag } from "lucide-react";
+import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useSearch } from "@/context/SearchContext";
 
 const links = [
   { href: "#featured", label: "Featured" },
@@ -15,7 +16,9 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { count, setOpen: openCart } = useCart();
+  const { query, setQuery, clear, isActive, results } = useSearch();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -27,21 +30,31 @@ export function Navbar() {
     document.documentElement.classList.toggle("light", light);
   }, [light]);
 
+  // When a search becomes active, scroll the results into view
+  useEffect(() => {
+    if (!isActive) return;
+    const el = document.getElementById("search-results");
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  }, [isActive]);
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass py-3" : "bg-transparent py-5"
+        scrolled || isActive ? "glass py-3" : "bg-transparent py-5"
       }`}
     >
-      <div className="container mx-auto flex items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-2 group">
+      <div className="container mx-auto flex items-center justify-between gap-3 px-6">
+        <a href="#top" className="flex items-center gap-2 group flex-shrink-0">
           <Flame className="h-7 w-7 text-primary animate-flame-flicker group-hover:scale-110 transition-transform" />
-          <span className="font-display text-xl tracking-widest">
+          <span className="font-display text-xl tracking-widest hidden sm:inline">
             HOT<span className="text-gradient-flame">WHEELZ</span>
           </span>
         </a>
 
-        <nav className="hidden md:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-6">
           {links.map((l) => (
             <a
               key={l.href}
@@ -53,7 +66,41 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        {/* Desktop search */}
+        <div className="hidden md:flex relative flex-1 max-w-xs ml-2">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search cars or category…"
+            aria-label="Search cars"
+            className="w-full bg-card/60 border border-border focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none rounded-full pl-9 pr-9 py-2 text-sm placeholder:text-muted-foreground transition-all"
+          />
+          {query && (
+            <button
+              onClick={clear}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-secondary text-muted-foreground hover:text-foreground"
+              aria-label="Clear search"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+          {isActive && (
+            <div className="absolute top-full left-0 right-0 mt-1 text-[10px] uppercase tracking-widest text-muted-foreground px-3">
+              {results.length} match{results.length === 1 ? "" : "es"}
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <button
+            onClick={() => setSearchOpen((v) => !v)}
+            className="md:hidden p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
+            aria-label="Search"
+          >
+            <Search className="h-4 w-4" />
+          </button>
           <button
             onClick={() => openCart(true)}
             className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
@@ -68,14 +115,14 @@ export function Navbar() {
           </button>
           <button
             onClick={() => setLight((v) => !v)}
-            className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
+            className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all hidden sm:inline-flex"
             aria-label="Toggle theme"
           >
             {light ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </button>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden p-2 rounded-full border border-border"
+            className="lg:hidden p-2 rounded-full border border-border"
             aria-label="Menu"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -83,8 +130,33 @@ export function Navbar() {
         </div>
       </div>
 
+      {/* Mobile search */}
+      {searchOpen && (
+        <div className="md:hidden mx-6 mt-3 relative animate-ignite">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            autoFocus
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search cars or category…"
+            aria-label="Search cars"
+            className="w-full bg-card/80 border border-border focus:border-primary outline-none rounded-full pl-9 pr-9 py-2.5 text-sm"
+          />
+          {query && (
+            <button
+              onClick={clear}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-secondary"
+              aria-label="Clear search"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+      )}
+
       {open && (
-        <nav className="md:hidden glass mt-3 mx-6 rounded-xl p-4 flex flex-col gap-3 animate-ignite">
+        <nav className="lg:hidden glass mt-3 mx-6 rounded-xl p-4 flex flex-col gap-3 animate-ignite">
           {links.map((l) => (
             <a
               key={l.href}

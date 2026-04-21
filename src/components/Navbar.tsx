@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun, Flame, Menu, X } from "lucide-react";
+import { Moon, Sun, Flame, Menu, X, ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const links = [
   { href: "#featured", label: "Featured" },
@@ -14,6 +15,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
+  const { count, setOpen: openCart } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -52,6 +54,18 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => openCart(true)}
+            className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
+            aria-label="Open cart"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            {count > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 px-1 rounded-full bg-flame text-primary-foreground text-[10px] font-display flex items-center justify-center shadow-flame animate-pulse-glow">
+                {count}
+              </span>
+            )}
+          </button>
           <button
             onClick={() => setLight((v) => !v)}
             className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"

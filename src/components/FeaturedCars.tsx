@@ -1,15 +1,31 @@
 import classic from "@/assets/car-classic.jpg";
 import supercar from "@/assets/car-supercar.jpg";
 import limited from "@/assets/car-limited.jpg";
-import { Flame, Star } from "lucide-react";
+import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
 
 const cars = [
-  { img: classic, name: "Crimson Charger", series: "Classic", speed: 220, badge: "Bestseller", price: "$14" },
-  { img: supercar, name: "Neon Phantom GT", series: "Supercar", speed: 340, badge: "New", price: "$22" },
-  { img: limited, name: "Inferno Blaze", series: "Limited", speed: 280, badge: "Rare", price: "$48" },
+  { id: "crimson-charger", img: classic, name: "Crimson Charger", series: "Classic", speed: 220, badge: "Bestseller", price: 14 },
+  { id: "neon-phantom-gt", img: supercar, name: "Neon Phantom GT", series: "Supercar", speed: 340, badge: "New", price: 22 },
+  { id: "inferno-blaze", img: limited, name: "Inferno Blaze", series: "Limited", speed: 280, badge: "Rare", price: 48 },
 ];
 
 export function FeaturedCars() {
+  const { addItem, setOpen } = useCart();
+
+  const handleAdd = (car: (typeof cars)[number]) => {
+    addItem({ id: car.id, name: car.name, series: car.series, price: car.price, img: car.img });
+    toast.success(`${car.name} added to garage`, {
+      description: `$${car.price.toFixed(2)} • ${car.series}`,
+    });
+  };
+
+  const handleBuyNow = (car: (typeof cars)[number]) => {
+    addItem({ id: car.id, name: car.name, series: car.series, price: car.price, img: car.img });
+    setOpen(true);
+  };
+
   return (
     <section id="featured" className="relative py-28 px-6">
       <div className="container mx-auto">
@@ -28,7 +44,7 @@ export function FeaturedCars() {
         <div className="grid md:grid-cols-3 gap-6">
           {cars.map((c, i) => (
             <article
-              key={c.name}
+              key={c.id}
               className="group relative bg-card border border-border rounded-2xl overflow-hidden hover-lift"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
@@ -55,7 +71,7 @@ export function FeaturedCars() {
                     <div className="text-xs uppercase tracking-widest text-primary">{c.series}</div>
                     <h3 className="font-display text-2xl uppercase mt-1">{c.name}</h3>
                   </div>
-                  <div className="font-display text-2xl text-gradient-flame">{c.price}</div>
+                  <div className="font-display text-2xl text-gradient-flame">${c.price}</div>
                 </div>
 
                 <div className="flex items-center justify-between pt-3 border-t border-border">
@@ -69,9 +85,22 @@ export function FeaturedCars() {
                   </div>
                 </div>
 
-                <button className="w-full py-3 border border-primary/40 hover:bg-flame hover:border-transparent hover:text-primary-foreground font-display uppercase tracking-wider text-xs rounded-md transition-all">
-                  Add to Garage
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => handleAdd(c)}
+                    className="inline-flex items-center justify-center gap-1.5 py-3 border border-primary/40 hover:bg-primary/10 hover:border-primary font-display uppercase tracking-wider text-[11px] rounded-md transition-all"
+                  >
+                    <ShoppingBag className="h-3.5 w-3.5" />
+                    Add
+                  </button>
+                  <button
+                    onClick={() => handleBuyNow(c)}
+                    className="inline-flex items-center justify-center gap-1.5 py-3 bg-flame text-primary-foreground font-display uppercase tracking-wider text-[11px] rounded-md hover:scale-[1.03] transition-transform shadow-flame"
+                  >
+                    <Zap className="h-3.5 w-3.5" />
+                    Buy Now
+                  </button>
+                </div>
               </div>
             </article>
           ))}

@@ -45,10 +45,10 @@ export function Hero() {
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a
-              href="#track"
+              href="#limited"
               className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-primary/60 text-foreground font-display uppercase tracking-wider text-sm rounded-md hover:bg-primary/10 hover:border-primary transition-all"
             >
-              Build a Track
+              Shop Limited
             </a>
           </div>
 

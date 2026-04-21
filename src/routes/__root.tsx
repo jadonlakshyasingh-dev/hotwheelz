@@ -40,6 +40,10 @@ export const Route = createRootRoute({
       { property: "og:description", content: "Premium die-cast cars and racing tracks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Hotwheelz — Unleash the Speed" },
+      { name: "twitter:description", content: "Premium die-cast cars and racing tracks." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8301503e-9dfd-42d5-bb51-eeda412c742d/id-preview-d69ac96c--79014c7a-6c1a-4bea-b312-7e11ca2dc13c.lovable.app-1776786248947.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8301503e-9dfd-42d5-bb51-eeda412c742d/id-preview-d69ac96c--79014c7a-6c1a-4bea-b312-7e11ca2dc13c.lovable.app-1776786248947.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

@@ -4,9 +4,30 @@ import limited from "@/assets/car-limited.jpg";
 import { ArrowUpRight } from "lucide-react";
 
 const collections = [
-  { img: classic, name: "Classics", count: 124, tag: "Heritage", desc: "Timeless muscle and chrome icons" },
-  { img: supercar, name: "Supercars", count: 86, tag: "Future", desc: "Aerodynamic beasts, neon lit" },
-  { img: limited, name: "Limited Edition", count: 32, tag: "Rare", desc: "Numbered drops, never restocked" },
+  {
+    img: classic,
+    name: "Classics",
+    count: 124,
+    tag: "Heritage",
+    desc: "Timeless muscle and chrome icons",
+    href: "#classics",
+  },
+  {
+    img: supercar,
+    name: "Supercars",
+    count: 86,
+    tag: "Future",
+    desc: "Aerodynamic beasts, neon lit",
+    href: "#supercars",
+  },
+  {
+    img: limited,
+    name: "Limited Edition",
+    count: 32,
+    tag: "Rare",
+    desc: "Numbered drops, never restocked",
+    href: "#limited",
+  },
 ];
 
 export function Collections() {
@@ -24,7 +45,7 @@ export function Collections() {
           {collections.map((c) => (
             <a
               key={c.name}
-              href="#featured"
+              href={c.href}
               className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-border hover:border-primary/60 transition-all"
             >
               <img
@@ -50,7 +71,7 @@ export function Collections() {
                   <span className="text-muted-foreground">
                     <span className="font-display text-foreground text-base">{c.count}</span> models
                   </span>
-                  <span className="text-primary group-hover:translate-x-1 transition-transform">Explore →</span>
+                  <span className="text-primary group-hover:translate-x-1 transition-transform">Shop →</span>
                 </div>
               </div>
             </a>

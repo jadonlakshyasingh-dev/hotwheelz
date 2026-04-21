@@ -4,11 +4,11 @@ import { useCart } from "@/context/CartContext";
 
 const links = [
   { href: "#featured", label: "Featured" },
-  { href: "#collections", label: "Collections" },
-  { href: "#new", label: "New Arrivals" },
-  { href: "#track", label: "Build Track" },
+  { href: "#classics", label: "Classics" },
+  { href: "#supercars", label: "Supercars" },
+  { href: "#limited", label: "Limited" },
+  { href: "#new", label: "New" },
   { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
 ];
 
 export function Navbar() {

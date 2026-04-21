@@ -1,19 +1,8 @@
 import { useRef } from "react";
-import classic from "@/assets/car-classic.jpg";
-import supercar from "@/assets/car-supercar.jpg";
-import limited from "@/assets/car-limited.jpg";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
-
-const arrivals = [
-  { id: "volt-striker", img: supercar, name: "Volt Striker", series: "Supercar", price: 26 },
-  { id: "phoenix-reign", img: limited, name: "Phoenix Reign", series: "Limited", price: 54 },
-  { id: "ruby-rocket", img: classic, name: "Ruby Rocket", series: "Classic", price: 16 },
-  { id: "cyber-lynx", img: supercar, name: "Cyber Lynx", series: "Supercar", price: 28 },
-  { id: "solar-fang", img: limited, name: "Solar Fang", series: "Limited", price: 62 },
-  { id: "midnight-mustang", img: classic, name: "Midnight Mustang", series: "Classic", price: 18 },
-];
+import { newArrivals } from "@/data/products";
 
 export function NewArrivals() {
   const ref = useRef<HTMLDivElement>(null);
@@ -23,13 +12,13 @@ export function NewArrivals() {
     ref.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
   };
 
-  const handleAdd = (c: (typeof arrivals)[number]) => {
+  const handleAdd = (c: (typeof newArrivals)[number]) => {
     addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img });
     toast.success(`${c.name} added`, { description: `$${c.price.toFixed(2)}` });
   };
 
   return (
-    <section id="new" className="relative py-28 px-6 overflow-hidden">
+    <section id="new" className="relative py-24 px-6 overflow-hidden">
       <div className="container mx-auto">
         <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
           <div>
@@ -62,10 +51,10 @@ export function NewArrivals() {
         className="flex gap-5 overflow-x-auto pb-6 px-6 md:px-[max(1.5rem,calc((100vw-1280px)/2))] snap-x snap-mandatory scrollbar-hide"
         style={{ scrollbarWidth: "none" }}
       >
-        {arrivals.map((c) => (
+        {newArrivals.map((c) => (
           <article
             key={c.id}
-            className="snap-start flex-shrink-0 w-[300px] bg-card border border-border rounded-xl overflow-hidden group hover-lift"
+            className="snap-start flex-shrink-0 w-[280px] bg-card border border-border rounded-xl overflow-hidden group hover-lift"
           >
             <div className="aspect-square overflow-hidden relative">
               <img
@@ -84,10 +73,10 @@ export function NewArrivals() {
                 <Plus className="h-5 w-5" />
               </button>
             </div>
-            <div className="p-5">
+            <div className="p-4">
               <div className="text-[10px] uppercase tracking-widest text-primary">{c.series}</div>
               <div className="flex justify-between items-center mt-1">
-                <h3 className="font-display text-xl uppercase">{c.name}</h3>
+                <h3 className="font-display text-lg uppercase truncate">{c.name}</h3>
                 <span className="font-display text-gradient-flame">${c.price}</span>
               </div>
               <button

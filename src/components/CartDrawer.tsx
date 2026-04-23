@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Flame, CheckCircle2 } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Flame, CheckCircle2, Sparkles } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { finishStyles, type Finish } from "@/context/FinishContext";
 import { toast } from "sonner";
 
 export function CartDrawer() {

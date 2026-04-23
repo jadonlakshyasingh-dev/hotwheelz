@@ -99,62 +99,107 @@ export function CartDrawer() {
           ) : (
             <>
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                {items.map((it) => (
-                  <div
-                    key={`${it.id}::${it.finish ?? "default"}`}
-                    className="flex gap-4 bg-card border border-border rounded-xl p-3"
-                  >
-                    <img
-                      src={it.img}
-                      alt={it.name}
-                      className="h-20 w-20 object-cover rounded-lg flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[10px] uppercase tracking-widest text-primary">
-                        {it.series}
+                {items.map((it) => {
+                  const fStyle = it.finish ? finishStyles[it.finish as Finish] : null;
+                  return (
+                    <div
+                      key={`${it.id}::${it.finish ?? "default"}`}
+                      className={`flex gap-4 bg-card border border-border rounded-xl p-3 ${fStyle?.ring ?? ""}`}
+                    >
+                      <div className="relative h-20 w-20 flex-shrink-0 rounded-lg overflow-hidden">
+                        <img src={it.img} alt={it.name} className="h-full w-full object-cover" />
+                        {fStyle && (
+                          <div
+                            className={`pointer-events-none absolute inset-0 ${fStyle.overlay}`}
+                            aria-hidden
+                          />
+                        )}
                       </div>
-                      <div className="font-display uppercase text-sm truncate">{it.name}</div>
-                      {it.finish && (
-                        <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-muted-foreground">
-                          <span className="text-primary">✦</span>
-                          {it.finish}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[10px] uppercase tracking-widest text-primary">
+                          {it.series}
                         </div>
-                      )}
-                      <div className="text-gradient-flame font-display mt-1">
-                        ${(it.price * it.qty).toFixed(2)}
-                      </div>
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => updateQty(it.id, it.qty - 1, it.finish)}
-                            className="h-7 w-7 rounded-full border border-border hover:border-primary hover:text-primary flex items-center justify-center"
-                            aria-label="Decrease"
+                        <div className="font-display uppercase text-sm truncate">{it.name}</div>
+                        {it.finish && fStyle && (
+                          <div
+                            className={`mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] uppercase tracking-widest font-display ${fStyle.chip}`}
                           >
-                            <Minus className="h-3 w-3" />
-                          </button>
-                          <span className="font-display w-5 text-center text-sm">{it.qty}</span>
+                            <span>{fStyle.icon}</span>
+                            {it.finish}
+                          </div>
+                        )}
+                        <div className="flex items-baseline gap-2 mt-1">
+                          <span className="text-gradient-flame font-display">
+                            ${(it.price * it.qty).toFixed(2)}
+                          </span>
+                          {it.qty > 1 && (
+                            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                              ${it.price.toFixed(2)} ea
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => updateQty(it.id, it.qty - 1, it.finish)}
+                              className="h-7 w-7 rounded-full border border-border hover:border-primary hover:text-primary flex items-center justify-center"
+                              aria-label="Decrease"
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span className="font-display w-5 text-center text-sm">{it.qty}</span>
+                            <button
+                              onClick={() => updateQty(it.id, it.qty + 1, it.finish)}
+                              className="h-7 w-7 rounded-full bg-flame text-primary-foreground flex items-center justify-center hover:scale-110 transition-transform"
+                              aria-label="Increase"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
+                          </div>
                           <button
-                            onClick={() => updateQty(it.id, it.qty + 1, it.finish)}
-                            className="h-7 w-7 rounded-full bg-flame text-primary-foreground flex items-center justify-center hover:scale-110 transition-transform"
-                            aria-label="Increase"
+                            onClick={() => removeItem(it.id, it.finish)}
+                            className="text-muted-foreground hover:text-destructive p-1"
+                            aria-label="Remove"
                           >
-                            <Plus className="h-3 w-3" />
+                            <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
-                        <button
-                          onClick={() => removeItem(it.id, it.finish)}
-                          className="text-muted-foreground hover:text-destructive p-1"
-                          aria-label="Remove"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <SheetFooter className="border-t border-border p-6 flex-col gap-3 sm:flex-col">
+                {Object.keys(finishBreakdown).length > 0 && (
+                  <div className="w-full rounded-lg border border-border bg-card/50 p-3">
+                    <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                      <Sparkles className="h-3 w-3 text-primary" />
+                      Finish breakdown
+                    </div>
+                    <div className="space-y-1">
+                      {Object.entries(finishBreakdown).map(([f, info]) => {
+                        const style = f in finishStyles ? finishStyles[f as Finish] : null;
+                        return (
+                          <div key={f} className="flex items-center justify-between text-xs">
+                            <span
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-display uppercase tracking-wider ${
+                                style?.chip ?? "bg-secondary text-foreground border border-border"
+                              }`}
+                            >
+                              {style && <span>{style.icon}</span>}
+                              {f}
+                              <span className="text-muted-foreground normal-case tracking-normal ml-1">
+                                ×{info.qty}
+                              </span>
+                            </span>
+                            <span className="font-display">${info.total.toFixed(2)}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 <div className="w-full space-y-1.5 text-sm">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>

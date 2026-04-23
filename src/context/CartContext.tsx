@@ -15,6 +15,7 @@ export type CartItem = {
   price: number;
   img: string;
   qty: number;
+  finish?: string;
 };
 
 type CartContextValue = {
@@ -59,10 +60,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback((item: Omit<CartItem, "qty">, qty = 1) => {
     setItems((prev) => {
-      const existing = prev.find((p) => p.id === item.id);
+      const existing = prev.find((p) => p.id === item.id && p.finish === item.finish);
       if (existing) {
         return prev.map((p) =>
-          p.id === item.id ? { ...p, qty: Math.min(99, p.qty + qty) } : p,
+          p.id === item.id && p.finish === item.finish
+            ? { ...p, qty: Math.min(99, p.qty + qty) }
+            : p,
         );
       }
       return [...prev, { ...item, qty }];

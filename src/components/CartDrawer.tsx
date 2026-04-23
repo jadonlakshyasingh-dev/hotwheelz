@@ -330,22 +330,87 @@ export function CartDrawer() {
               </div>
             </div>
 
-            <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-1 text-sm">
-              <div className="flex justify-between text-muted-foreground">
-                <span>Items ({count})</span>
-                <span>${subtotal.toFixed(2)}</span>
+            <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-3 text-sm">
+              <div>
+                <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                  Order items
+                </div>
+                <ul className="space-y-1.5">
+                  {items.map((it) => {
+                    const style = it.finish ? finishStyles[it.finish as Finish] : null;
+                    return (
+                      <li
+                        key={`sum-${it.id}::${it.finish ?? "default"}`}
+                        className="flex items-center justify-between gap-3"
+                      >
+                        <span className="flex items-center gap-2 min-w-0">
+                          <span className="font-display uppercase text-xs truncate">
+                            {it.name}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground">×{it.qty}</span>
+                          {it.finish && style && (
+                            <span
+                              className={`hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] uppercase tracking-wider font-display ${style.chip}`}
+                            >
+                              <span>{style.icon}</span>
+                              {it.finish}
+                            </span>
+                          )}
+                        </span>
+                        <span className="font-display whitespace-nowrap">
+                          ${(it.price * it.qty).toFixed(2)}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-              <div className="flex justify-between text-muted-foreground">
-                <span>Shipping</span>
-                <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
-              </div>
-              <div className="flex justify-between text-muted-foreground">
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-display text-lg pt-2 border-t border-border">
-                <span>Total</span>
-                <span className="text-gradient-flame">${total.toFixed(2)}</span>
+
+              {Object.keys(finishBreakdown).length > 0 && (
+                <div className="border-t border-border pt-3">
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                    <Sparkles className="h-3 w-3 text-primary" />
+                    By finish
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {Object.entries(finishBreakdown).map(([f, info]) => {
+                      const style = f in finishStyles ? finishStyles[f as Finish] : null;
+                      return (
+                        <span
+                          key={`sum-f-${f}`}
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-display ${
+                            style?.chip ?? "bg-secondary text-foreground border border-border"
+                          }`}
+                        >
+                          {style && <span>{style.icon}</span>}
+                          {f}
+                          <span className="text-muted-foreground normal-case tracking-normal">
+                            ×{info.qty} · ${info.total.toFixed(2)}
+                          </span>
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="border-t border-border pt-3 space-y-1">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Items ({count})</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Shipping</span>
+                  <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Tax</span>
+                  <span>${tax.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between font-display text-lg pt-2 border-t border-border">
+                  <span>Total</span>
+                  <span className="text-gradient-flame">${total.toFixed(2)}</span>
+                </div>
               </div>
             </div>
 

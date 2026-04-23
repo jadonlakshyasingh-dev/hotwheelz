@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 
 const links = [
   { href: "#featured", label: "Featured" },
@@ -17,8 +18,22 @@ export function Navbar() {
   const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [desktopFocused, setDesktopFocused] = useState(false);
+  const [mobileFocused, setMobileFocused] = useState(false);
+  const desktopRef = useRef<HTMLDivElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null);
   const { count, setOpen: openCart } = useCart();
   const { query, setQuery, clear, isActive, results } = useSearch();
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (desktopRef.current && !desktopRef.current.contains(t)) setDesktopFocused(false);
+      if (mobileRef.current && !mobileRef.current.contains(t)) setMobileFocused(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -67,12 +82,13 @@ export function Navbar() {
         </nav>
 
         {/* Desktop search */}
-        <div className="hidden md:flex relative flex-1 max-w-xs ml-2">
+        <div ref={desktopRef} className="hidden md:flex relative flex-1 max-w-xs ml-2">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setDesktopFocused(true)}
             placeholder="Search cars or category…"
             aria-label="Search cars"
             className="w-full bg-card/60 border border-border focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none rounded-full pl-9 pr-9 py-2 text-sm placeholder:text-muted-foreground transition-all"
@@ -86,7 +102,10 @@ export function Navbar() {
               <X className="h-3.5 w-3.5" />
             </button>
           )}
-          {isActive && (
+          {desktopFocused && query && (
+            <SearchAutocomplete onSelect={() => setDesktopFocused(false)} />
+          )}
+          {isActive && !desktopFocused && (
             <div className="absolute top-full left-0 right-0 mt-1 text-[10px] uppercase tracking-widest text-muted-foreground px-3">
               {results.length} match{results.length === 1 ? "" : "es"}
             </div>
@@ -132,13 +151,14 @@ export function Navbar() {
 
       {/* Mobile search */}
       {searchOpen && (
-        <div className="md:hidden mx-6 mt-3 relative animate-ignite">
+        <div ref={mobileRef} className="md:hidden mx-6 mt-3 relative animate-ignite">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setMobileFocused(true)}
             placeholder="Search cars or category…"
             aria-label="Search cars"
             className="w-full bg-card/80 border border-border focus:border-primary outline-none rounded-full pl-9 pr-9 py-2.5 text-sm"
@@ -151,6 +171,9 @@ export function Navbar() {
             >
               <X className="h-3.5 w-3.5" />
             </button>
+          )}
+          {mobileFocused && query && (
+            <SearchAutocomplete onSelect={() => setMobileFocused(false)} />
           )}
         </div>
       )}

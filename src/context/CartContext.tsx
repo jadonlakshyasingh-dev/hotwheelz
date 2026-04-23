@@ -72,14 +72,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const removeItem = useCallback((id: string) => {
-    setItems((prev) => prev.filter((p) => p.id !== id));
+  const removeItem = useCallback((id: string, finish?: string) => {
+    setItems((prev) => prev.filter((p) => !(p.id === id && p.finish === finish)));
   }, []);
 
-  const updateQty = useCallback((id: string, qty: number) => {
+  const updateQty = useCallback((id: string, qty: number, finish?: string) => {
     setItems((prev) =>
       prev
-        .map((p) => (p.id === id ? { ...p, qty: Math.max(0, Math.min(99, qty)) } : p))
+        .map((p) =>
+          p.id === id && p.finish === finish
+            ? { ...p, qty: Math.max(0, Math.min(99, qty)) }
+            : p,
+        )
         .filter((p) => p.qty > 0),
     );
   }, []);

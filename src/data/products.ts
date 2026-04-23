@@ -7,8 +7,20 @@ import superPurple from "@/assets/car-super-purple.jpg";
 import limited from "@/assets/car-limited.jpg";
 import limitedGold from "@/assets/car-limited-gold.jpg";
 import limitedChrome from "@/assets/car-limited-chrome.jpg";
+import twinMill from "@/assets/car-twin-mill.jpg";
+import boneShaker from "@/assets/car-bone-shaker.jpg";
+import mustangGreen from "@/assets/car-mustang-green.jpg";
+import camaroYellow from "@/assets/car-camaro-yellow.jpg";
+import lamboOrange from "@/assets/car-lambo-orange.jpg";
+import ferrariRed from "@/assets/car-ferrari-red.jpg";
+import bugattiBlue from "@/assets/car-bugatti-blue.jpg";
+import f1Red from "@/assets/car-f1-red.jpg";
+import rallyBlue from "@/assets/car-rally-blue.jpg";
+import monsterTruck from "@/assets/car-monster-truck.jpg";
+import skylineBlue from "@/assets/car-skyline-blue.jpg";
+import porscheSilver from "@/assets/car-porsche-silver.jpg";
 
-export type Category = "Classic" | "Supercar" | "Limited";
+export type Category = "Classic" | "Supercar" | "Limited" | "Track";
 
 export type Product = {
   id: string;
@@ -22,7 +34,7 @@ export type Product = {
 };
 
 export const products: Product[] = [
-  // Classics
+  // ─── Classics ─────────────────────────────────────────
   {
     id: "crimson-charger",
     name: "Crimson Charger",
@@ -52,8 +64,47 @@ export const products: Product[] = [
     img: classicBlack,
     desc: "Glossy black hot rod with red flame decals.",
   },
+  {
+    id: "emerald-stallion",
+    name: "Emerald Stallion '67",
+    series: "Classic",
+    price: 19,
+    speed: 235,
+    badge: "New",
+    img: mustangGreen,
+    desc: "Iconic 1967 fastback in emerald green with twin white stripes.",
+  },
+  {
+    id: "sunstrike-ss",
+    name: "Sunstrike SS",
+    series: "Classic",
+    price: 17,
+    speed: 240,
+    img: camaroYellow,
+    desc: "1969 SS muscle in solar yellow with twin black race stripes.",
+  },
+  {
+    id: "twin-mill-ii",
+    name: "Twin Mill II",
+    series: "Classic",
+    price: 20,
+    speed: 260,
+    badge: "Iconic",
+    img: twinMill,
+    desc: "Dual-engine custom legend. Chrome blowers bursting through the hood.",
+  },
+  {
+    id: "bone-shaker",
+    name: "Bone Shaker",
+    series: "Classic",
+    price: 22,
+    speed: 245,
+    badge: "Cult",
+    img: boneShaker,
+    desc: "Skull-faced black hot rod with orange flames and oversized rears.",
+  },
 
-  // Supercars
+  // ─── Supercars ────────────────────────────────────────
   {
     id: "neon-phantom-gt",
     name: "Neon Phantom GT",
@@ -83,8 +134,88 @@ export const products: Product[] = [
     img: superPurple,
     desc: "Pearlescent purple hypercar with gold-spoked rims.",
   },
+  {
+    id: "solar-bull",
+    name: "Solar Bull V12",
+    series: "Supercar",
+    price: 32,
+    speed: 370,
+    badge: "Top Speed",
+    img: lamboOrange,
+    desc: "Scissor-door brawler in pearl orange with carbon splitter.",
+  },
+  {
+    id: "rosso-corsa",
+    name: "Rosso Corsa 488",
+    series: "Supercar",
+    price: 30,
+    speed: 365,
+    img: ferrariRed,
+    desc: "Italian flagship in racing red with gold five-spoke rims.",
+  },
+  {
+    id: "veyron-strike",
+    name: "Hyperion Chiron",
+    series: "Supercar",
+    price: 38,
+    speed: 420,
+    badge: "Hypercar",
+    img: bugattiBlue,
+    desc: "1500 hp two-tone hypercar in carbon black & electric blue.",
+  },
+  {
+    id: "silver-singer",
+    name: "Silver Singer 911",
+    series: "Supercar",
+    price: 27,
+    speed: 320,
+    img: porscheSilver,
+    desc: "Restomod 911 in liquid silver with deep-dish black turbofans.",
+  },
 
-  // Limited Edition
+  // ─── Track / Race ─────────────────────────────────────
+  {
+    id: "scuderia-f1",
+    name: "Scuderia F1-24",
+    series: "Track",
+    price: 34,
+    speed: 380,
+    badge: "Race",
+    img: f1Red,
+    desc: "Open-wheel formula racer in deep crimson livery.",
+  },
+  {
+    id: "rally-warrior",
+    name: "Rally Warrior STi",
+    series: "Track",
+    price: 24,
+    speed: 270,
+    badge: "WRC",
+    img: rallyBlue,
+    desc: "World Rally blue with gold rims, mud-splashed and ready.",
+  },
+  {
+    id: "skyline-r34",
+    name: "Skyline R34 Nismo",
+    series: "Track",
+    price: 29,
+    speed: 310,
+    badge: "JDM",
+    img: skylineBlue,
+    desc: "Bayside blue legend with bronze Nismo wheels and neon underglow.",
+  },
+  {
+    id: "stomper-4x4",
+    name: "Stomper 4x4",
+    series: "Track",
+    price: 25,
+    speed: 180,
+    badge: "Off-road",
+    img: monsterTruck,
+    desc: "Lifted lime-green monster on knobby tires with full light bar.",
+  },
+
+  // ─── Limited Edition ──────────────────────────────────
   {
     id: "inferno-blaze",
     name: "Inferno Blaze",
@@ -118,10 +249,12 @@ export const products: Product[] = [
 ];
 
 export const newArrivals: Product[] = [
-  products.find((p) => p.id === "venom-strike")!,
-  products.find((p) => p.id === "chrome-fury")!,
-  products.find((p) => p.id === "violet-vortex")!,
-  products.find((p) => p.id === "midnight-marauder")!,
-  products.find((p) => p.id === "golden-rally-7")!,
-  products.find((p) => p.id === "blackout-rod")!,
+  products.find((p) => p.id === "twin-mill-ii")!,
+  products.find((p) => p.id === "solar-bull")!,
+  products.find((p) => p.id === "skyline-r34")!,
+  products.find((p) => p.id === "veyron-strike")!,
+  products.find((p) => p.id === "bone-shaker")!,
+  products.find((p) => p.id === "scuderia-f1")!,
+  products.find((p) => p.id === "rally-warrior")!,
+  products.find((p) => p.id === "stomper-4x4")!,
 ];

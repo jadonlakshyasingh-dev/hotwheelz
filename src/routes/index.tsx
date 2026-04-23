@@ -60,12 +60,21 @@ function Index() {
             bg="bg-secondary/30"
           />
           <CategorySection
+            id="track"
+            eyebrow="Race Day"
+            title="Track &"
+            highlight="Rally"
+            description="Formula racers, WRC rally legends, JDM tuners, and lifted off-road beasts."
+            category="Track"
+          />
+          <CategorySection
             id="limited"
             eyebrow="Rare"
             title="Limited"
             highlight="Edition"
             description="Numbered, hand-finished, never restocked. For serious collectors only."
             category="Limited"
+            bg="bg-secondary/30"
           />
           <NewArrivals />
           <About />

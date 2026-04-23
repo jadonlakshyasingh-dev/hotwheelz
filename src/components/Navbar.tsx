@@ -8,9 +8,9 @@ const links = [
   { href: "#featured", label: "Featured" },
   { href: "#classics", label: "Classics" },
   { href: "#supercars", label: "Supercars" },
+  { href: "#track", label: "Track" },
   { href: "#limited", label: "Limited" },
   { href: "#new", label: "New" },
-  { href: "#about", label: "About" },
 ];
 
 export function Navbar() {

@@ -101,6 +101,12 @@ export function CartDrawer() {
                         {it.series}
                       </div>
                       <div className="font-display uppercase text-sm truncate">{it.name}</div>
+                      {it.finish && (
+                        <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-muted-foreground">
+                          <span className="text-primary">✦</span>
+                          {it.finish}
+                        </div>
+                      )}
                       <div className="text-gradient-flame font-display mt-1">
                         ${(it.price * it.qty).toFixed(2)}
                       </div>

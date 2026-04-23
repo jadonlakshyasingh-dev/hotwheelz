@@ -42,6 +42,18 @@ export function CartDrawer() {
   const tax = +(subtotal * 0.08).toFixed(2);
   const total = +(subtotal + shipping + tax).toFixed(2);
 
+  // Group items by finish for the checkout summary
+  const finishBreakdown = items.reduce<Record<string, { qty: number; total: number }>>(
+    (acc, it) => {
+      const key = it.finish ?? "Standard";
+      if (!acc[key]) acc[key] = { qty: 0, total: 0 };
+      acc[key].qty += it.qty;
+      acc[key].total += it.qty * it.price;
+      return acc;
+    },
+    {},
+  );
+
   const submitOrder = (e: React.FormEvent) => {
     e.preventDefault();
     const id =

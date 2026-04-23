@@ -3,6 +3,7 @@ import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
+import { FinishPicker } from "@/components/FinishPicker";
 
 const links = [
   { href: "#featured", label: "Featured" },
@@ -113,6 +114,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
+          <FinishPicker className="hidden xl:inline-flex" />
           <button
             onClick={() => setSearchOpen((v) => !v)}
             className="md:hidden p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
@@ -190,6 +192,12 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
+          <div className="pt-2 mt-1 border-t border-border">
+            <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+              Finish
+            </div>
+            <FinishPicker variant="compact" />
+          </div>
         </nav>
       )}
     </header>

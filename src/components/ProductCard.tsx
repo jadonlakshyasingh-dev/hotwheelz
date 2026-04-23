@@ -1,5 +1,6 @@
 import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useFinish, finishStyles } from "@/context/FinishContext";
 import { toast } from "sonner";
 import type { Product } from "@/data/products";
 
@@ -10,6 +11,8 @@ type Props = {
 
 export function ProductCard({ product, compact = false }: Props) {
   const { addItem, setOpen } = useCart();
+  const { finish } = useFinish();
+  const fx = finishStyles[finish];
 
   const add = () => {
     addItem({
@@ -18,9 +21,10 @@ export function ProductCard({ product, compact = false }: Props) {
       series: product.series,
       price: product.price,
       img: product.img,
+      finish,
     });
     toast.success(`${product.name} added to garage`, {
-      description: `$${product.price.toFixed(2)} • ${product.series}`,
+      description: `${finish} • $${product.price.toFixed(2)} • ${product.series}`,
     });
   };
 
@@ -31,12 +35,13 @@ export function ProductCard({ product, compact = false }: Props) {
       series: product.series,
       price: product.price,
       img: product.img,
+      finish,
     });
     setOpen(true);
   };
 
   return (
-    <article className="group relative bg-card border border-border rounded-2xl overflow-hidden hover-lift flex flex-col">
+    <article className={`group relative bg-card border border-border rounded-2xl overflow-hidden hover-lift flex flex-col transition-all ${fx.ring}`}>
       {product.badge && (
         <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 bg-flame text-primary-foreground text-[10px] font-display uppercase tracking-widest rounded-full">
           <Flame className="h-3 w-3" />
@@ -44,15 +49,26 @@ export function ProductCard({ product, compact = false }: Props) {
         </div>
       )}
 
+      {/* Finish chip */}
+      <div
+        className={`absolute top-4 right-4 z-10 inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-display uppercase tracking-widest rounded-full ${fx.chip}`}
+        title={`Finish: ${finish}`}
+      >
+        <span aria-hidden>{fx.icon}</span>
+        {finish}
+      </div>
+
       <div className={`${compact ? "aspect-square" : "aspect-[4/3]"} overflow-hidden bg-gradient-to-br from-secondary to-background relative`}>
         <img
           src={product.img}
-          alt={product.name}
+          alt={`${product.name} — ${finish} finish`}
           loading="lazy"
           width={1024}
           height={1024}
           className="h-full w-full object-cover group-hover:scale-110 group-hover:-rotate-2 transition-transform duration-700"
         />
+        {/* Finish overlay treatment */}
+        <div className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${fx.overlay}`} />
         <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
       </div>
 
@@ -79,13 +95,21 @@ export function ProductCard({ product, compact = false }: Props) {
               <Star key={k} className="h-3 w-3 fill-primary text-primary" />
             ))}
           </div>
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-            Top <span className="text-foreground font-display">{product.speed}</span> mph
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className="inline-flex items-center gap-1">
+              <span aria-hidden className="text-primary">{fx.icon}</span>
+              {finish}
+            </span>
+            <span className="text-border">·</span>
+            <span>
+              Top <span className="text-foreground font-display">{product.speed}</span> mph
+            </span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2 mt-auto">
           <button
+            type="button"
             onClick={add}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 border border-primary/40 hover:bg-primary/10 hover:border-primary font-display uppercase tracking-wider text-[11px] rounded-md transition-all"
           >
@@ -93,6 +117,7 @@ export function ProductCard({ product, compact = false }: Props) {
             Add
           </button>
           <button
+            type="button"
             onClick={buyNow}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-[11px] rounded-md hover:scale-[1.03] transition-transform shadow-flame"
           >

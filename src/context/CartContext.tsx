@@ -15,6 +15,7 @@ export type CartItem = {
   price: number;
   img: string;
   qty: number;
+  finish?: string;
 };
 
 type CartContextValue = {
@@ -24,8 +25,8 @@ type CartContextValue = {
   isOpen: boolean;
   setOpen: (v: boolean) => void;
   addItem: (item: Omit<CartItem, "qty">, qty?: number) => void;
-  removeItem: (id: string) => void;
-  updateQty: (id: string, qty: number) => void;
+  removeItem: (id: string, finish?: string) => void;
+  updateQty: (id: string, qty: number, finish?: string) => void;
   clear: () => void;
 };
 
@@ -59,24 +60,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback((item: Omit<CartItem, "qty">, qty = 1) => {
     setItems((prev) => {
-      const existing = prev.find((p) => p.id === item.id);
+      const existing = prev.find((p) => p.id === item.id && p.finish === item.finish);
       if (existing) {
         return prev.map((p) =>
-          p.id === item.id ? { ...p, qty: Math.min(99, p.qty + qty) } : p,
+          p.id === item.id && p.finish === item.finish
+            ? { ...p, qty: Math.min(99, p.qty + qty) }
+            : p,
         );
       }
       return [...prev, { ...item, qty }];
     });
   }, []);
 
-  const removeItem = useCallback((id: string) => {
-    setItems((prev) => prev.filter((p) => p.id !== id));
+  const removeItem = useCallback((id: string, finish?: string) => {
+    setItems((prev) => prev.filter((p) => !(p.id === id && p.finish === finish)));
   }, []);
 
-  const updateQty = useCallback((id: string, qty: number) => {
+  const updateQty = useCallback((id: string, qty: number, finish?: string) => {
     setItems((prev) =>
       prev
-        .map((p) => (p.id === id ? { ...p, qty: Math.max(0, Math.min(99, qty)) } : p))
+        .map((p) =>
+          p.id === id && p.finish === finish
+            ? { ...p, qty: Math.max(0, Math.min(99, qty)) }
+            : p,
+        )
         .filter((p) => p.qty > 0),
     );
   }, []);

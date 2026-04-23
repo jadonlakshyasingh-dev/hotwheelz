@@ -25,8 +25,8 @@ type CartContextValue = {
   isOpen: boolean;
   setOpen: (v: boolean) => void;
   addItem: (item: Omit<CartItem, "qty">, qty?: number) => void;
-  removeItem: (id: string) => void;
-  updateQty: (id: string, qty: number) => void;
+  removeItem: (id: string, finish?: string) => void;
+  updateQty: (id: string, qty: number, finish?: string) => void;
   clear: () => void;
 };
 

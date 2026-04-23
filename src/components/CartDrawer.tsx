@@ -88,7 +88,7 @@ export function CartDrawer() {
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {items.map((it) => (
                   <div
-                    key={it.id}
+                    key={`${it.id}::${it.finish ?? "default"}`}
                     className="flex gap-4 bg-card border border-border rounded-xl p-3"
                   >
                     <img
@@ -113,7 +113,7 @@ export function CartDrawer() {
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => updateQty(it.id, it.qty - 1)}
+                            onClick={() => updateQty(it.id, it.qty - 1, it.finish)}
                             className="h-7 w-7 rounded-full border border-border hover:border-primary hover:text-primary flex items-center justify-center"
                             aria-label="Decrease"
                           >
@@ -121,7 +121,7 @@ export function CartDrawer() {
                           </button>
                           <span className="font-display w-5 text-center text-sm">{it.qty}</span>
                           <button
-                            onClick={() => updateQty(it.id, it.qty + 1)}
+                            onClick={() => updateQty(it.id, it.qty + 1, it.finish)}
                             className="h-7 w-7 rounded-full bg-flame text-primary-foreground flex items-center justify-center hover:scale-110 transition-transform"
                             aria-label="Increase"
                           >
@@ -129,7 +129,7 @@ export function CartDrawer() {
                           </button>
                         </div>
                         <button
-                          onClick={() => removeItem(it.id)}
+                          onClick={() => removeItem(it.id, it.finish)}
                           className="text-muted-foreground hover:text-destructive p-1"
                           aria-label="Remove"
                         >

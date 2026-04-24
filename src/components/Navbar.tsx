@@ -7,6 +7,7 @@ import { FinishPicker } from "@/components/FinishPicker";
 
 const links = [
   { href: "#featured", label: "Featured" },
+  { href: "#fast-furious", label: "F&F" },
   { href: "#classics", label: "Classics" },
   { href: "#supercars", label: "Supercars" },
   { href: "#track", label: "Track" },

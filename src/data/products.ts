@@ -19,8 +19,16 @@ import rallyBlue from "@/assets/car-rally-blue.jpg";
 import monsterTruck from "@/assets/car-monster-truck.jpg";
 import skylineBlue from "@/assets/car-skyline-blue.jpg";
 import porscheSilver from "@/assets/car-porsche-silver.jpg";
+import ffSupra from "@/assets/car-ff-supra.jpg";
+import ffSkyline from "@/assets/car-ff-skyline.jpg";
+import ffCharger from "@/assets/car-ff-charger.jpg";
+import ffEclipse from "@/assets/car-ff-eclipse.jpg";
+import ffRx7 from "@/assets/car-ff-rx7.jpg";
+import ffGtr from "@/assets/car-ff-gtr.jpg";
+import ffRoadrunner from "@/assets/car-ff-roadrunner.jpg";
+import ffHellcat from "@/assets/car-ff-hellcat.jpg";
 
-export type Category = "Classic" | "Supercar" | "Limited" | "Track";
+export type Category = "Classic" | "Supercar" | "Limited" | "Track" | "Fast & Furious";
 
 export type Product = {
   id: string;
@@ -246,15 +254,96 @@ export const products: Product[] = [
     img: limitedChrome,
     desc: "Mirror-chrome plating with red stripe accents.",
   },
+
+  // ─── Fast & Furious ───────────────────────────────────
+  {
+    id: "ff-supra-mk4",
+    name: "Brian's Supra MK4",
+    series: "Fast & Furious",
+    price: 36,
+    speed: 320,
+    badge: "Movie Icon",
+    img: ffSupra,
+    desc: "Orange 2JZ legend with black race stripes — full metal body, chrome 5-spokes & rubber tires.",
+  },
+  {
+    id: "ff-skyline-r34",
+    name: "Brian's Skyline R34",
+    series: "Fast & Furious",
+    price: 38,
+    speed: 330,
+    badge: "2 Fast",
+    img: ffSkyline,
+    desc: "Bayside silver-blue R34 GT-R die-cast with tampo decals and detailed Nismo wing.",
+  },
+  {
+    id: "ff-charger-rt",
+    name: "Dom's Charger R/T",
+    series: "Fast & Furious",
+    price: 42,
+    speed: 290,
+    badge: "Bestseller",
+    img: ffCharger,
+    desc: "Blacked-out 1970 Charger with chrome blower bursting through the hood. Heavy metal.",
+  },
+  {
+    id: "ff-eclipse",
+    name: "Brian's Eclipse GSX",
+    series: "Fast & Furious",
+    price: 32,
+    speed: 260,
+    badge: "OG",
+    img: ffEclipse,
+    desc: "Lime-green Eclipse with purple tribal tampos — the car that started it all.",
+  },
+  {
+    id: "ff-rx7-veilside",
+    name: "Han's RX-7 Veilside",
+    series: "Fast & Furious",
+    price: 40,
+    speed: 310,
+    badge: "Tokyo Drift",
+    img: ffRx7,
+    desc: "Silver & red Veilside Fortune RX-7 die-cast with widebody flares and rear wing.",
+  },
+  {
+    id: "ff-gtr-r35",
+    name: "Brian's GT-R R35",
+    series: "Fast & Furious",
+    price: 39,
+    speed: 340,
+    img: ffGtr,
+    desc: "Deep-blue R35 with twin white stripes, blacked-out RAYS-style wheels and rubber tires.",
+  },
+  {
+    id: "ff-roadrunner",
+    name: "Letty's Plymouth Road Runner",
+    series: "Fast & Furious",
+    price: 35,
+    speed: 270,
+    badge: "Rare",
+    img: ffRoadrunner,
+    desc: "Matte gunmetal '70 Road Runner — raw muscle in heavy-cast metal.",
+  },
+  {
+    id: "ff-hellcat",
+    name: "Dom's Charger Hellcat",
+    series: "Fast & Furious",
+    price: 44,
+    speed: 350,
+    badge: "Saga",
+    img: ffHellcat,
+    desc: "Modern blacked-out Hellcat die-cast with red-lip wheels and aggressive widebody stance.",
+  },
 ];
 
 export const newArrivals: Product[] = [
+  products.find((p) => p.id === "ff-supra-mk4")!,
+  products.find((p) => p.id === "ff-charger-rt")!,
+  products.find((p) => p.id === "ff-skyline-r34")!,
+  products.find((p) => p.id === "ff-rx7-veilside")!,
   products.find((p) => p.id === "twin-mill-ii")!,
-  products.find((p) => p.id === "solar-bull")!,
-  products.find((p) => p.id === "skyline-r34")!,
+  products.find((p) => p.id === "ff-gtr-r35")!,
   products.find((p) => p.id === "veyron-strike")!,
   products.find((p) => p.id === "bone-shaker")!,
-  products.find((p) => p.id === "scuderia-f1")!,
-  products.find((p) => p.id === "rally-warrior")!,
-  products.find((p) => p.id === "stomper-4x4")!,
 ];

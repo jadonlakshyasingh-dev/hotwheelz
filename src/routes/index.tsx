@@ -43,12 +43,21 @@ function Index() {
           <FeaturedCars />
           <Collections />
           <CategorySection
+            id="fast-furious"
+            eyebrow="Saga Collection"
+            title="Fast &"
+            highlight="Furious"
+            description="The full diecast saga — Brian's Supra, Dom's Charger, Han's RX-7 and more. Heavy metal bodies, chrome wheels, rubber tires."
+            category="Fast & Furious"
+          />
+          <CategorySection
             id="classics"
             eyebrow="Heritage"
             title="Classic"
             highlight="Muscle"
             description="Chrome-trimmed icons from the golden age. Built to be displayed and driven."
             category="Classic"
+            bg="bg-secondary/30"
           />
           <CategorySection
             id="supercars"

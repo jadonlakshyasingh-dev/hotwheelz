@@ -1,20 +1,25 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useFinish, finishStyles } from "@/context/FinishContext";
 import { toast } from "sonner";
 import { newArrivals } from "@/data/products";
 
 export function NewArrivals() {
   const ref = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
+  const { finish } = useFinish();
+  const fx = finishStyles[finish];
 
   const scroll = (dir: number) => {
     ref.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
   };
 
   const handleAdd = (c: (typeof newArrivals)[number]) => {
-    addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img });
-    toast.success(`${c.name} added`, { description: `$${c.price.toFixed(2)}` });
+    addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img, finish });
+    toast.success(`${c.name} added`, {
+      description: `${finish} • $${c.price.toFixed(2)}`,
+    });
   };
 
   return (
@@ -56,15 +61,22 @@ export function NewArrivals() {
             key={c.id}
             className="snap-start flex-shrink-0 w-[280px] bg-card border border-border rounded-xl overflow-hidden group hover-lift"
           >
-            <div className="aspect-square overflow-hidden relative">
+            <div className={`aspect-square overflow-hidden relative ${fx.ring}`}>
               <img
                 src={c.img}
-                alt={c.name}
+                alt={`${c.name} — ${finish} finish`}
                 loading="lazy"
                 width={1024}
-                height={1024}
+                height={768}
                 className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
+              <div className={`pointer-events-none absolute inset-0 ${fx.overlay}`} aria-hidden />
+              <div
+                className={`absolute top-3 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-display uppercase tracking-widest ${fx.chip}`}
+              >
+                <span aria-hidden>{fx.icon}</span>
+                {finish}
+              </div>
               <button
                 onClick={() => handleAdd(c)}
                 className="absolute bottom-3 right-3 h-11 w-11 rounded-full bg-flame text-primary-foreground flex items-center justify-center shadow-flame opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all hover:scale-110"

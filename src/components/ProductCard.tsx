@@ -64,7 +64,7 @@ export function ProductCard({ product, compact = false }: Props) {
           alt={`${product.name} — ${finish} finish`}
           loading="lazy"
           width={1024}
-          height={1024}
+          height={768}
           className="h-full w-full object-cover group-hover:scale-110 group-hover:-rotate-2 transition-transform duration-700"
         />
         {/* Finish overlay treatment */}

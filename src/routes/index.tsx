@@ -57,7 +57,6 @@ function Index() {
             highlight="Muscle"
             description="Chrome-trimmed icons from the golden age. Built to be displayed and driven."
             category="Classic"
-            bg="bg-secondary/30"
           />
           <CategorySection
             id="supercars"

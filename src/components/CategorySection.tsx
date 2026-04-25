@@ -1,5 +1,6 @@
 import { ProductCard } from "./ProductCard";
 import { products, type Category } from "@/data/products";
+import { useFinish } from "@/context/FinishContext";
 
 type Props = {
   id: string;
@@ -12,7 +13,15 @@ type Props = {
 };
 
 export function CategorySection({ id, eyebrow, title, highlight, description, category, bg }: Props) {
-  const items = products.filter((p) => p.series === category);
+  const { finish } = useFinish();
+  const items = products.filter((p) => {
+    if (p.series !== category) return false;
+    if (finish === "Metallic") return p.material === "Metallic";
+    if (finish === "Chrome") return p.material === "Chrome";
+    return true; // "Rubber Tires" — show all materials
+  });
+
+  if (items.length === 0) return null;
 
   return (
     <section id={id} className={`relative py-24 px-6 ${bg ?? ""}`}>

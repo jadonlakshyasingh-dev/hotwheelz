@@ -6,7 +6,7 @@ import superGreen from "@/assets/car-super-green.jpg";
 import superPurple from "@/assets/car-super-purple.jpg";
 import limited from "@/assets/car-limited.jpg";
 import limitedGold from "@/assets/car-limited-gold.jpg";
-import limitedChrome from "@/assets/car-limited-chrome.jpg";
+
 import twinMill from "@/assets/car-twin-mill.jpg";
 import boneShaker from "@/assets/car-bone-shaker.jpg";
 import mustangGreen from "@/assets/car-mustang-green.jpg";
@@ -28,13 +28,27 @@ import ffGtr from "@/assets/car-ff-gtr.jpg";
 import ffRoadrunner from "@/assets/car-ff-roadrunner.jpg";
 import ffHellcat from "@/assets/car-ff-hellcat.jpg";
 
-// Chrome line assets
-import chromeBase from "@/assets/car-chrome-base.jpg";
-import chromeMuscle from "@/assets/car-chrome-muscle.jpg";
-import chromeHotrod from "@/assets/car-chrome-hotrod.jpg";
-import chromeJdm from "@/assets/car-chrome-jdm.jpg";
+// Chrome line assets — one render per product
+import chromeFury from "@/assets/car-chrome-fury.jpg";
+import chromePhantom from "@/assets/car-chrome-phantom.jpg";
+import chromeBull from "@/assets/car-chrome-bull.jpg";
+import chromeSpider from "@/assets/car-chrome-spider.jpg";
+import chromeVeyron from "@/assets/car-chrome-veyron.jpg";
+import chromeSinger from "@/assets/car-chrome-singer.jpg";
+import chromeCharger from "@/assets/car-chrome-charger.jpg";
+import chromeStallion from "@/assets/car-chrome-stallion.jpg";
+import chromeBlackbird from "@/assets/car-chrome-blackbird.jpg";
+import chromeTwinMill from "@/assets/car-chrome-twin-mill.jpg";
+import chromeBoneShaker from "@/assets/car-chrome-bone-shaker.jpg";
+import chromeDeuce from "@/assets/car-chrome-deuce.jpg";
+import chromeSkyline from "@/assets/car-chrome-skyline.jpg";
+import chromeSupra from "@/assets/car-chrome-supra.jpg";
+import chromeRx7 from "@/assets/car-chrome-rx7.jpg";
+import chromeRally from "@/assets/car-chrome-rally.jpg";
 import chromeF1 from "@/assets/car-chrome-f1.jpg";
-import chromeTruck from "@/assets/car-chrome-truck.jpg";
+import chromePrototype from "@/assets/car-chrome-prototype.jpg";
+import chromeStomper from "@/assets/car-chrome-stomper.jpg";
+import chromeVault from "@/assets/car-chrome-vault.jpg";
 
 export type Category = "Classic" | "Supercar" | "Limited" | "Track" | "Fast & Furious";
 export type Material = "Metallic" | "Chrome";
@@ -375,7 +389,7 @@ const chromeProducts: Product[] = [
     price: 62,
     speed: 300,
     badge: "1 of 250",
-    img: limitedChrome,
+    img: chromeFury,
     desc: "Mirror-chrome plating with red stripe accents. The OG of the chrome line.",
   },
   {
@@ -386,7 +400,7 @@ const chromeProducts: Product[] = [
     price: 36,
     speed: 345,
     badge: "Mirror",
-    img: chromeBase,
+    img: chromePhantom,
     desc: "Aero hypercar plated in mirror chrome — reflects every angle of the garage.",
   },
   {
@@ -397,7 +411,7 @@ const chromeProducts: Product[] = [
     price: 44,
     speed: 372,
     badge: "Top Plate",
-    img: chromeBase,
+    img: chromeBull,
     desc: "Scissor-door V12 brawler in liquid chrome with carbon splitter.",
   },
   {
@@ -407,7 +421,7 @@ const chromeProducts: Product[] = [
     material: "Chrome",
     price: 40,
     speed: 330,
-    img: chromeBase,
+    img: chromeSpider,
     desc: "Mid-engine spyder polished to a mirror, blacked-out 5-spoke wheels.",
   },
   {
@@ -418,7 +432,7 @@ const chromeProducts: Product[] = [
     price: 52,
     speed: 415,
     badge: "Hypercar",
-    img: chromeBase,
+    img: chromeVeyron,
     desc: "Quad-turbo W16 hypercar wrapped in seamless mirror plating.",
   },
   {
@@ -428,7 +442,7 @@ const chromeProducts: Product[] = [
     material: "Chrome",
     price: 38,
     speed: 318,
-    img: chromeBase,
+    img: chromeSinger,
     desc: "Restomod 911 silhouette in liquid chrome with deep-dish turbofans.",
   },
   {
@@ -439,7 +453,7 @@ const chromeProducts: Product[] = [
     price: 34,
     speed: 240,
     badge: "Bestseller",
-    img: chromeMuscle,
+    img: chromeCharger,
     desc: "1969 muscle icon dipped in mirror chrome with twin black stripes.",
   },
   {
@@ -449,7 +463,7 @@ const chromeProducts: Product[] = [
     material: "Chrome",
     price: 32,
     speed: 235,
-    img: chromeMuscle,
+    img: chromeStallion,
     desc: "Fastback legend re-skinned in flawless chrome plating.",
   },
   {
@@ -460,7 +474,7 @@ const chromeProducts: Product[] = [
     price: 35,
     speed: 248,
     badge: "Hot",
-    img: chromeMuscle,
+    img: chromeBlackbird,
     desc: "1970 SS in mirror chrome — twin chrome side pipes, chrome side mirrors.",
   },
   {
@@ -471,7 +485,7 @@ const chromeProducts: Product[] = [
     price: 46,
     speed: 265,
     badge: "Iconic",
-    img: chromeHotrod,
+    img: chromeTwinMill,
     desc: "Dual-engine custom plated head-to-toe in chrome. Reflective everywhere.",
   },
   {
@@ -482,7 +496,7 @@ const chromeProducts: Product[] = [
     price: 48,
     speed: 250,
     badge: "Cult",
-    img: chromeHotrod,
+    img: chromeBoneShaker,
     desc: "Skull-faced hot rod fully chromed — exposed engine, chrome blower & pipes.",
   },
   {
@@ -492,7 +506,7 @@ const chromeProducts: Product[] = [
     material: "Chrome",
     price: 42,
     speed: 230,
-    img: chromeHotrod,
+    img: chromeDeuce,
     desc: "1932 hot rod silhouette in liquid chrome with red interior pop.",
   },
   {
@@ -503,7 +517,7 @@ const chromeProducts: Product[] = [
     price: 41,
     speed: 312,
     badge: "JDM",
-    img: chromeJdm,
+    img: chromeSkyline,
     desc: "Mirror-chrome R34 GT-R with bronze TE37-style wheels and Nismo wing.",
   },
   {
@@ -514,7 +528,7 @@ const chromeProducts: Product[] = [
     price: 43,
     speed: 322,
     badge: "JDM",
-    img: chromeJdm,
+    img: chromeSupra,
     desc: "2JZ legend dipped in mirror chrome with carbon-look rear wing.",
   },
   {
@@ -524,7 +538,7 @@ const chromeProducts: Product[] = [
     material: "Chrome",
     price: 39,
     speed: 305,
-    img: chromeJdm,
+    img: chromeRx7,
     desc: "Rotary widebody coupe plated in seamless mirror chrome.",
   },
   {
@@ -535,7 +549,7 @@ const chromeProducts: Product[] = [
     price: 37,
     speed: 268,
     badge: "WRC",
-    img: chromeJdm,
+    img: chromeRally,
     desc: "WRC-spec sedan in chrome plating — gold rims and mud-splash decals.",
   },
   {
@@ -556,7 +570,7 @@ const chromeProducts: Product[] = [
     material: "Chrome",
     price: 47,
     speed: 360,
-    img: chromeF1,
+    img: chromePrototype,
     desc: "Le Mans prototype in seamless chrome — closed cockpit and giant rear wing.",
   },
   {
@@ -567,7 +581,7 @@ const chromeProducts: Product[] = [
     price: 45,
     speed: 185,
     badge: "Off-road",
-    img: chromeTruck,
+    img: chromeStomper,
     desc: "Lifted off-road truck plated in chrome — knobby tires and roof light bar.",
   },
   {
@@ -578,7 +592,7 @@ const chromeProducts: Product[] = [
     price: 78,
     speed: 360,
     badge: "1 of 100",
-    img: chromeBase,
+    img: chromeVault,
     desc: "Numbered vault drop — display-grade chrome plating, signed certificate.",
   },
 ];

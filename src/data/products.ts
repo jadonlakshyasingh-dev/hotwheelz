@@ -28,13 +28,27 @@ import ffGtr from "@/assets/car-ff-gtr.jpg";
 import ffRoadrunner from "@/assets/car-ff-roadrunner.jpg";
 import ffHellcat from "@/assets/car-ff-hellcat.jpg";
 
-// Chrome line assets
-import chromeBase from "@/assets/car-chrome-base.jpg";
-import chromeMuscle from "@/assets/car-chrome-muscle.jpg";
-import chromeHotrod from "@/assets/car-chrome-hotrod.jpg";
-import chromeJdm from "@/assets/car-chrome-jdm.jpg";
+// Chrome line assets — one render per product
+import chromeFury from "@/assets/car-chrome-fury.jpg";
+import chromePhantom from "@/assets/car-chrome-phantom.jpg";
+import chromeBull from "@/assets/car-chrome-bull.jpg";
+import chromeSpider from "@/assets/car-chrome-spider.jpg";
+import chromeVeyron from "@/assets/car-chrome-veyron.jpg";
+import chromeSinger from "@/assets/car-chrome-singer.jpg";
+import chromeCharger from "@/assets/car-chrome-charger.jpg";
+import chromeStallion from "@/assets/car-chrome-stallion.jpg";
+import chromeBlackbird from "@/assets/car-chrome-blackbird.jpg";
+import chromeTwinMill from "@/assets/car-chrome-twin-mill.jpg";
+import chromeBoneShaker from "@/assets/car-chrome-bone-shaker.jpg";
+import chromeDeuce from "@/assets/car-chrome-deuce.jpg";
+import chromeSkyline from "@/assets/car-chrome-skyline.jpg";
+import chromeSupra from "@/assets/car-chrome-supra.jpg";
+import chromeRx7 from "@/assets/car-chrome-rx7.jpg";
+import chromeRally from "@/assets/car-chrome-rally.jpg";
 import chromeF1 from "@/assets/car-chrome-f1.jpg";
-import chromeTruck from "@/assets/car-chrome-truck.jpg";
+import chromePrototype from "@/assets/car-chrome-prototype.jpg";
+import chromeStomper from "@/assets/car-chrome-stomper.jpg";
+import chromeVault from "@/assets/car-chrome-vault.jpg";
 
 export type Category = "Classic" | "Supercar" | "Limited" | "Track" | "Fast & Furious";
 export type Material = "Metallic" | "Chrome";

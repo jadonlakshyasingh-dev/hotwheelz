@@ -3,9 +3,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Finish = "Metallic" | "Chrome" | "Rubber Tires";
 
 export const FINISHES: { id: Finish; label: string; hint: string }[] = [
-  { id: "Metallic", label: "Metallic", hint: "Glossy paint flake" },
-  { id: "Chrome", label: "Chrome", hint: "Mirror-plated body" },
-  { id: "Rubber Tires", label: "Rubber Tires", hint: "Real rubber + premium grip" },
+  { id: "Metallic", label: "Metallic", hint: "Show only metallic die-cast cars" },
+  { id: "Chrome", label: "Chrome", hint: "Show only mirror-chrome plated cars" },
+  { id: "Rubber Tires", label: "All", hint: "Show every car (metallic + chrome)" },
 ];
 
 type Ctx = {

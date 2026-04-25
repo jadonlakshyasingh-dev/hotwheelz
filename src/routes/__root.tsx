@@ -81,13 +81,13 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <CartProvider>
-      <SearchProvider>
-        <FinishProvider>
+      <FinishProvider>
+        <SearchProvider>
           <Outlet />
           <CartDrawer />
           <Toaster richColors position="top-right" />
-        </FinishProvider>
-      </SearchProvider>
+        </SearchProvider>
+      </FinishProvider>
     </CartProvider>
   );
 }

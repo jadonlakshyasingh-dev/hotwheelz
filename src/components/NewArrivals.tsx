@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useFinish, finishStyles } from "@/context/FinishContext";
 import { toast } from "sonner";
-import { newArrivals } from "@/data/products";
+import { newArrivals, products, type Product } from "@/data/products";
 
 export function NewArrivals() {
   const ref = useRef<HTMLDivElement>(null);
@@ -11,14 +11,28 @@ export function NewArrivals() {
   const { finish } = useFinish();
   const fx = finishStyles[finish];
 
+  const visible = useMemo<Product[]>(() => {
+    if (finish === "Metallic") return newArrivals.filter((p) => p.material === "Metallic");
+    if (finish === "Chrome") {
+      const chromeArrivals = newArrivals.filter((p) => p.material === "Chrome");
+      if (chromeArrivals.length >= 4) return chromeArrivals;
+      const extra = products
+        .filter((p) => p.material === "Chrome" && !chromeArrivals.some((c) => c.id === p.id))
+        .slice(0, 8 - chromeArrivals.length);
+      return [...chromeArrivals, ...extra];
+    }
+    return newArrivals;
+  }, [finish]);
+
   const scroll = (dir: number) => {
     ref.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
   };
 
-  const handleAdd = (c: (typeof newArrivals)[number]) => {
-    addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img, finish });
+  const handleAdd = (c: Product) => {
+    const itemFinish = c.material;
+    addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img, finish: itemFinish });
     toast.success(`${c.name} added`, {
-      description: `${finish} • $${c.price.toFixed(2)}`,
+      description: `${itemFinish} • $${c.price.toFixed(2)}`,
     });
   };
 
@@ -56,7 +70,7 @@ export function NewArrivals() {
         className="flex gap-5 overflow-x-auto pb-6 px-6 md:px-[max(1.5rem,calc((100vw-1280px)/2))] snap-x snap-mandatory scrollbar-hide"
         style={{ scrollbarWidth: "none" }}
       >
-        {newArrivals.map((c) => (
+        {visible.map((c) => (
           <article
             key={c.id}
             className="snap-start flex-shrink-0 w-[280px] bg-card border border-border rounded-xl overflow-hidden group hover-lift"

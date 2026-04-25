@@ -1,12 +1,17 @@
 import { ProductCard } from "./ProductCard";
 import { products } from "@/data/products";
+import { useFinish } from "@/context/FinishContext";
 
 export function FeaturedCars() {
-  const featured = [
-    products.find((p) => p.id === "crimson-charger")!,
-    products.find((p) => p.id === "neon-phantom-gt")!,
-    products.find((p) => p.id === "inferno-blaze")!,
-  ];
+  const { finish } = useFinish();
+
+  const metallicPicks = ["crimson-charger", "neon-phantom-gt", "inferno-blaze"];
+  const chromePicks = ["chrome-fury", "chrome-phantom", "chrome-twin-mill"];
+
+  const ids =
+    finish === "Chrome" ? chromePicks : finish === "Metallic" ? metallicPicks : metallicPicks;
+
+  const featured = ids.map((id) => products.find((p) => p.id === id)!).filter(Boolean);
 
   return (
     <section id="featured" className="relative py-28 px-6">
@@ -19,7 +24,9 @@ export function FeaturedCars() {
             </h2>
           </div>
           <p className="text-muted-foreground max-w-sm">
-            Hand-picked rides from the latest drop. Each one engineered for raw, unfiltered velocity.
+            {finish === "Chrome"
+              ? "Mirror-plated drops from the chrome line. Display-grade reflections."
+              : "Hand-picked rides from the latest drop. Each one engineered for raw, unfiltered velocity."}
           </p>
         </div>
 

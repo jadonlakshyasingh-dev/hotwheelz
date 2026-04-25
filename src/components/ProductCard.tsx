@@ -1,6 +1,6 @@
 import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useFinish, finishStyles } from "@/context/FinishContext";
+import { finishStyles } from "@/context/FinishContext";
 import { toast } from "sonner";
 import type { Product } from "@/data/products";
 
@@ -11,8 +11,10 @@ type Props = {
 
 export function ProductCard({ product, compact = false }: Props) {
   const { addItem, setOpen } = useCart();
-  const { finish } = useFinish();
-  const fx = finishStyles[finish];
+  // Each card uses its own product material for its visual treatment,
+  // so chrome cars always look chrome and metallic cars always look metallic.
+  const cardFinish = product.material;
+  const fx = finishStyles[cardFinish];
 
   const add = () => {
     addItem({
@@ -21,10 +23,10 @@ export function ProductCard({ product, compact = false }: Props) {
       series: product.series,
       price: product.price,
       img: product.img,
-      finish,
+      finish: cardFinish,
     });
     toast.success(`${product.name} added to garage`, {
-      description: `${finish} • $${product.price.toFixed(2)} • ${product.series}`,
+      description: `${cardFinish} • $${product.price.toFixed(2)} • ${product.series}`,
     });
   };
 
@@ -35,7 +37,7 @@ export function ProductCard({ product, compact = false }: Props) {
       series: product.series,
       price: product.price,
       img: product.img,
-      finish,
+      finish: cardFinish,
     });
     setOpen(true);
   };
@@ -49,19 +51,19 @@ export function ProductCard({ product, compact = false }: Props) {
         </div>
       )}
 
-      {/* Finish chip */}
+      {/* Material chip — reflects this product's own finish */}
       <div
         className={`absolute top-4 right-4 z-10 inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-display uppercase tracking-widest rounded-full ${fx.chip}`}
-        title={`Finish: ${finish}`}
+        title={`Material: ${cardFinish}`}
       >
         <span aria-hidden>{fx.icon}</span>
-        {finish}
+        {cardFinish}
       </div>
 
       <div className={`${compact ? "aspect-square" : "aspect-[4/3]"} overflow-hidden bg-gradient-to-br from-secondary to-background relative`}>
         <img
           src={product.img}
-          alt={`${product.name} — ${finish} finish`}
+          alt={`${product.name} — ${cardFinish} finish`}
           loading="lazy"
           width={1024}
           height={768}
@@ -98,7 +100,7 @@ export function ProductCard({ product, compact = false }: Props) {
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <span aria-hidden className="text-primary">{fx.icon}</span>
-              {finish}
+              {cardFinish}
             </span>
             <span className="text-border">·</span>
             <span>

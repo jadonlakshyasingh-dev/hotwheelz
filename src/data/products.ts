@@ -6,7 +6,7 @@ import superGreen from "@/assets/car-super-green.jpg";
 import superPurple from "@/assets/car-super-purple.jpg";
 import limited from "@/assets/car-limited.jpg";
 import limitedGold from "@/assets/car-limited-gold.jpg";
-import limitedChrome from "@/assets/car-limited-chrome.jpg";
+
 import twinMill from "@/assets/car-twin-mill.jpg";
 import boneShaker from "@/assets/car-bone-shaker.jpg";
 import mustangGreen from "@/assets/car-mustang-green.jpg";

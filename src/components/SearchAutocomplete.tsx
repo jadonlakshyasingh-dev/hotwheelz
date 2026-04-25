@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Flame, Tag } from "lucide-react";
 import { products, type Category } from "@/data/products";
 import { useSearch } from "@/context/SearchContext";
+import { useFinish } from "@/context/FinishContext";
 
 type Props = {
   onSelect?: () => void;
@@ -12,11 +13,18 @@ const ALL_CATEGORIES: Category[] = ["Classic", "Supercar", "Limited"];
 
 export function SearchAutocomplete({ onSelect, className = "" }: Props) {
   const { query, setQuery } = useSearch();
+  const { finish } = useFinish();
   const q = query.trim().toLowerCase();
 
   const { models, categories } = useMemo(() => {
     if (!q) return { models: [], categories: [] as Category[] };
-    const models = products
+    const pool =
+      finish === "Metallic"
+        ? products.filter((p) => p.material === "Metallic")
+        : finish === "Chrome"
+          ? products.filter((p) => p.material === "Chrome")
+          : products;
+    const models = pool
       .filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
@@ -26,7 +34,7 @@ export function SearchAutocomplete({ onSelect, className = "" }: Props) {
       .slice(0, 5);
     const categories = ALL_CATEGORIES.filter((c) => c.toLowerCase().includes(q));
     return { models, categories };
-  }, [q]);
+  }, [q, finish]);
 
   if (!q) return null;
   const empty = models.length === 0 && categories.length === 0;

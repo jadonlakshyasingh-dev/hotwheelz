@@ -56,7 +56,7 @@ export function NewArrivals() {
         className="flex gap-5 overflow-x-auto pb-6 px-6 md:px-[max(1.5rem,calc((100vw-1280px)/2))] snap-x snap-mandatory scrollbar-hide"
         style={{ scrollbarWidth: "none" }}
       >
-        {newArrivals.map((c) => (
+        {visible.map((c) => (
           <article
             key={c.id}
             className="snap-start flex-shrink-0 w-[280px] bg-card border border-border rounded-xl overflow-hidden group hover-lift"

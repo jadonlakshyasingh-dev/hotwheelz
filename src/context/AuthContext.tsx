@@ -82,8 +82,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAdmin(false);
   };
 
+  const refreshProfile = async () => {
+    if (!user) return;
+    await loadProfileAndRole(user.id);
+  };
+
   const value = useMemo<AuthContextValue>(
-    () => ({ session, user, profile, isAdmin, loading, signOut }),
+    () => ({ session, user, profile, isAdmin, loading, signOut, refreshProfile }),
     [session, user, profile, isAdmin, loading],
   );
 

@@ -1,9 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
+import { useAuth } from "@/context/AuthContext";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { FinishPicker } from "@/components/FinishPicker";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 const links = [
   { href: "#featured", label: "Featured" },
@@ -26,6 +37,7 @@ export function Navbar() {
   const mobileRef = useRef<HTMLDivElement>(null);
   const { count, setOpen: openCart } = useCart();
   const { query, setQuery, clear, isActive, results } = useSearch();
+  const { user, profile, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -135,6 +147,57 @@ export function Navbar() {
               </span>
             )}
           </button>
+          {/* User menu */}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
+                  aria-label="Account menu"
+                >
+                  <UserIcon className="h-4 w-4" />
+                  {isAdmin && (
+                    <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-background" />
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="flex flex-col">
+                  <span className="font-display uppercase tracking-wider text-xs text-muted-foreground">
+                    Driver
+                  </span>
+                  <span className="truncate">{profile?.display_name || user.email}</span>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin" className="cursor-pointer">
+                      <Shield className="h-4 w-4 mr-2" />
+                      Admin garage
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem
+                  onClick={async () => {
+                    await signOut();
+                    toast.success("Engine off. See you on the next race.");
+                  }}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all text-xs font-display uppercase tracking-wider"
+            >
+              <UserIcon className="h-3.5 w-3.5" />
+              Sign in
+            </Link>
+          )}
           <button
             onClick={() => setLight((v) => !v)}
             className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all hidden sm:inline-flex"

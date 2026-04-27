@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield } from "lucide-react";
+import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield, UserCog } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { useAuth } from "@/context/AuthContext";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { FinishPicker } from "@/components/FinishPicker";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,

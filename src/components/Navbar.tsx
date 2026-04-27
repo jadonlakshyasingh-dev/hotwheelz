@@ -150,46 +150,79 @@ export function Navbar() {
           </button>
           {/* User menu */}
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
-                  aria-label="Account menu"
-                >
-                  <UserIcon className="h-4 w-4" />
-                  {isAdmin && (
-                    <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-background" />
-                  )}
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="flex flex-col">
-                  <span className="font-display uppercase tracking-wider text-xs text-muted-foreground">
-                    Driver
-                  </span>
-                  <span className="truncate">{profile?.display_name || user.email}</span>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {isAdmin && (
-                  <DropdownMenuItem asChild>
-                    <Link to="/admin" className="cursor-pointer">
-                      <Shield className="h-4 w-4 mr-2" />
-                      Admin garage
-                    </Link>
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem
-                  onClick={async () => {
-                    await signOut();
-                    toast.success("Engine off. See you on the next race.");
-                  }}
-                  className="cursor-pointer text-destructive focus:text-destructive"
-                >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            (() => {
+              const displayName = profile?.display_name || user.email || "";
+              const initials = displayName.split(/\s+|@/)[0].slice(0, 2).toUpperCase();
+              return (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="relative rounded-full border border-border hover:border-primary transition-all overflow-hidden h-9 w-9 flex items-center justify-center"
+                      aria-label="Account menu"
+                    >
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage
+                          src={profile?.avatar_url || undefined}
+                          alt={displayName}
+                        />
+                        <AvatarFallback className="bg-secondary text-foreground text-[11px] font-display tracking-wider">
+                          {initials || <UserIcon className="h-4 w-4" />}
+                        </AvatarFallback>
+                      </Avatar>
+                      {isAdmin && (
+                        <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-background" />
+                      )}
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-60">
+                    <DropdownMenuLabel className="flex items-center gap-3 py-2">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage
+                          src={profile?.avatar_url || undefined}
+                          alt={displayName}
+                        />
+                        <AvatarFallback className="bg-secondary text-[11px] font-display tracking-wider">
+                          {initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-display uppercase tracking-wider text-xs text-muted-foreground">
+                          Driver
+                        </span>
+                        <span className="truncate text-sm">
+                          {profile?.display_name || user.email}
+                        </span>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="cursor-pointer">
+                        <UserCog className="h-4 w-4 mr-2" />
+                        Edit profile
+                      </Link>
+                    </DropdownMenuItem>
+                    {isAdmin && (
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin" className="cursor-pointer">
+                          <Shield className="h-4 w-4 mr-2" />
+                          Admin garage
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem
+                      onClick={async () => {
+                        await signOut();
+                        toast.success("Engine off. See you on the next race.");
+                      }}
+                      className="cursor-pointer text-destructive focus:text-destructive"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            })()
           ) : (
             <Link
               to="/auth"

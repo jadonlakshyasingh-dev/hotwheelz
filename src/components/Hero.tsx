@@ -30,8 +30,8 @@ export function Hero() {
           </div>
 
           <h1 className="font-display text-6xl md:text-7xl lg:text-8xl leading-[0.9] uppercase">
-            Unleash<br />
-            the <span className="text-gradient-flame animate-flame-flicker inline-block">Speed</span>
+            <span className="text-neon">Unleash</span><br />
+            the <span className="text-holo inline-block">Future</span>
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-md">

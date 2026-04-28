@@ -315,10 +315,10 @@
   border-radius: inherit;
   background: conic-gradient(
     from 0deg,
-    oklch(0.72 0.28 320),
-    oklch(0.78 0.2 200),
-    oklch(0.85 0.22 130),
-    oklch(0.72 0.28 320)
+    oklch(0.74 0.22 30),
+    oklch(0.78 0.16 195),
+    oklch(0.85 0.18 75),
+    oklch(0.74 0.22 30)
   );
   filter: blur(14px);
   opacity: 0.55;
@@ -369,26 +369,26 @@
 .text-holo {
   background: linear-gradient(
     90deg,
-    oklch(0.78 0.2 200),
-    oklch(0.72 0.28 320),
-    oklch(0.85 0.22 130),
-    oklch(0.78 0.2 200)
+    oklch(0.78 0.16 195),
+    oklch(0.74 0.22 30),
+    oklch(0.85 0.18 75),
+    oklch(0.78 0.16 195)
   );
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: holo-shift 5s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px oklch(0.72 0.28 320 / 0.5));
+  filter: drop-shadow(0 0 20px oklch(0.74 0.22 30 / 0.5));
 }
 
 /* Neon outline text */
 .text-neon {
   color: oklch(0.98 0.01 280);
   text-shadow:
-    0 0 4px oklch(0.78 0.2 200 / 0.8),
-    0 0 12px oklch(0.72 0.28 320 / 0.6),
-    0 0 30px oklch(0.72 0.28 320 / 0.4);
+    0 0 4px oklch(0.78 0.16 195 / 0.8),
+    0 0 12px oklch(0.74 0.22 30 / 0.6),
+    0 0 30px oklch(0.74 0.22 30 / 0.4);
 }
 
 /* Scanlines overlay */
@@ -431,14 +431,14 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 14px oklch(0.72 0.28 320 / 0.45));
+  filter: drop-shadow(0 0 14px oklch(0.74 0.22 30 / 0.45));
 }
 
 /* Tilted, beveled badge */
 .chip-neon {
-  background: linear-gradient(135deg, oklch(0.72 0.28 320 / 0.25), oklch(0.78 0.2 200 / 0.25));
-  border: 1px solid oklch(0.78 0.2 200 / 0.5);
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.15), 0 0 18px oklch(0.72 0.28 320 / 0.35);
+  background: linear-gradient(135deg, oklch(0.74 0.22 30 / 0.25), oklch(0.78 0.16 195 / 0.25));
+  border: 1px solid oklch(0.78 0.16 195 / 0.5);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.15), 0 0 18px oklch(0.74 0.22 30 / 0.35);
 }
 
 /* Subtle grid floor */

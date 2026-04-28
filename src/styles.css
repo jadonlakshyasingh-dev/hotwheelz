@@ -295,15 +295,130 @@
   border-radius: inherit;
   background: conic-gradient(
     from 0deg,
-    oklch(0.78 0.2 70),
-    oklch(0.62 0.27 27),
-    oklch(0.78 0.18 220),
-    oklch(0.78 0.2 70)
+    oklch(0.72 0.28 320),
+    oklch(0.78 0.2 200),
+    oklch(0.85 0.22 130),
+    oklch(0.72 0.28 320)
   );
   filter: blur(14px);
   opacity: 0.55;
   z-index: -1;
   animation: spin-slow 8s linear infinite;
+}
+
+/* === Crazy theme extras === */
+
+/* Aurora mesh that drifts behind everything */
+@keyframes aurora-drift {
+  0% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(-3%, 2%, 0) rotate(180deg) scale(1.15); }
+  100% { transform: translate3d(0,0,0) rotate(360deg) scale(1); }
+}
+.aurora-bg {
+  position: fixed;
+  inset: -20%;
+  background: var(--gradient-aurora);
+  filter: blur(80px) saturate(140%);
+  opacity: 0.35;
+  z-index: -2;
+  animation: aurora-drift 28s linear infinite;
+  pointer-events: none;
+}
+
+/* Floating neon orbs */
+@keyframes orb-float {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(20px, -30px, 0); }
+}
+.neon-orb {
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: -1;
+  mix-blend-mode: screen;
+  animation: orb-float 14s ease-in-out infinite;
+}
+
+/* Holographic shimmering text */
+@keyframes holo-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.text-holo {
+  background: linear-gradient(
+    90deg,
+    oklch(0.78 0.2 200),
+    oklch(0.72 0.28 320),
+    oklch(0.85 0.22 130),
+    oklch(0.78 0.2 200)
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: holo-shift 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px oklch(0.72 0.28 320 / 0.5));
+}
+
+/* Neon outline text */
+.text-neon {
+  color: oklch(0.98 0.01 280);
+  text-shadow:
+    0 0 4px oklch(0.78 0.2 200 / 0.8),
+    0 0 12px oklch(0.72 0.28 320 / 0.6),
+    0 0 30px oklch(0.72 0.28 320 / 0.4);
+}
+
+/* Scanlines overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    oklch(1 0 0 / 0.04) 0px,
+    oklch(1 0 0 / 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* Marquee speed bar */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 22s linear infinite;
+  white-space: nowrap;
+}
+
+/* Cyber grid floor with depth */
+@keyframes grid-pan {
+  to { background-position: 0 60px; }
+}
+
+/* Override flame gradient utilities to neon set */
+.bg-flame { background: var(--gradient-flame); }
+.text-gradient-flame {
+  background: var(--gradient-flame);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 14px oklch(0.72 0.28 320 / 0.45));
+}
+
+/* Tilted, beveled badge */
+.chip-neon {
+  background: linear-gradient(135deg, oklch(0.72 0.28 320 / 0.25), oklch(0.78 0.2 200 / 0.25));
+  border: 1px solid oklch(0.78 0.2 200 / 0.5);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.15), 0 0 18px oklch(0.72 0.28 320 / 0.35);
 }
 
 /* Subtle grid floor */

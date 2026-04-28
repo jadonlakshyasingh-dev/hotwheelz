@@ -43,7 +43,8 @@ export function ProductCard({ product, compact = false }: Props) {
   };
 
   return (
-    <article className={`group relative bg-card border border-border rounded-2xl overflow-hidden hover-lift flex flex-col transition-all ${fx.ring}`}>
+    <div className="perspective-scene">
+    <article className={`group relative card-3d border border-border rounded-2xl overflow-hidden tilt-3d sheen flex flex-col ${fx.ring}`}>
       {product.badge && (
         <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 bg-flame text-primary-foreground text-[10px] font-display uppercase tracking-widest rounded-full">
           <Flame className="h-3 w-3" />
@@ -60,7 +61,7 @@ export function ProductCard({ product, compact = false }: Props) {
         {cardFinish}
       </div>
 
-      <div className={`${compact ? "aspect-square" : "aspect-[4/3]"} overflow-hidden bg-gradient-to-br from-secondary to-background relative`}>
+      <div className={`${compact ? "aspect-square" : "aspect-[4/3]"} overflow-hidden bg-gradient-to-br from-secondary to-background relative tilt-pop-sm`}>
         <img
           src={product.img}
           alt={`${product.name} — ${cardFinish} finish`}
@@ -129,5 +130,6 @@ export function ProductCard({ product, compact = false }: Props) {
         </div>
       </div>
     </article>
+    </div>
   );
 }

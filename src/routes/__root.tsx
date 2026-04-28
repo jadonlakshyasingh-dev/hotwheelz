@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/CartContext";
 import { SearchProvider } from "@/context/SearchContext";
 import { FinishProvider } from "@/context/FinishContext";
 import { CartDrawer } from "@/components/CartDrawer";
+import { NeonScene } from "@/components/NeonScene";
 import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";

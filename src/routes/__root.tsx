@@ -86,6 +86,7 @@ function RootComponent() {
       <CartProvider>
         <FinishProvider>
           <SearchProvider>
+            <NeonScene />
             <Outlet />
             <CartDrawer />
             <Toaster richColors position="top-right" />

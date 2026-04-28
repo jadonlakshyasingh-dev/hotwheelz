@@ -127,6 +127,7 @@
   }
   body {
     background: var(--gradient-night);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;

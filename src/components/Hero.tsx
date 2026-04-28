@@ -5,16 +5,19 @@ import { ArrowRight, Zap } from "lucide-react";
 export function Hero() {
   return (
     <section id="top" className="relative min-h-screen flex items-center overflow-hidden pt-24">
-      <div className="absolute inset-0">
-        <img
-          src={heroCar}
-          alt="Die-cast muscle car blasting through neon flames on an orange Hot Wheels track"
-          className="h-full w-full object-cover"
-          width={1920}
-          height={1280}
-        />
+      <div className="absolute inset-0 perspective-scene">
+        <div className="absolute inset-0 animate-float-3d will-change-transform">
+          <img
+            src={heroCar}
+            alt="Die-cast muscle car blasting through neon flames on an orange Hot Wheels track"
+            className="h-full w-full object-cover"
+            width={1920}
+            height={1280}
+          />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 grid-floor opacity-60" />
       </div>
 
       <SpeedLines />

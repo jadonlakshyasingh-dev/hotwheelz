@@ -225,7 +225,7 @@ export function Navbar() {
             })()
           ) : (
             <Link
-              to="/auth"
+              to="/signin"
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all text-xs font-display uppercase tracking-wider"
             >
               <UserIcon className="h-3.5 w-3.5" />

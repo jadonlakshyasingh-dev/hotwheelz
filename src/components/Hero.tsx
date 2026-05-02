@@ -13,6 +13,8 @@ export function Hero() {
             className="h-full w-full object-cover"
             width={1920}
             height={1280}
+            fetchPriority="high"
+            decoding="async"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />

@@ -42,13 +42,18 @@ export function Footer() {
             © 2026 Hotwheelz Garage — All gears reserved.
           </p>
           <div className="flex gap-3">
-            {[Instagram, Youtube, Twitter].map((Icon, i) => (
+            {[
+              { Icon: Instagram, label: "Instagram" },
+              { Icon: Youtube, label: "YouTube" },
+              { Icon: Twitter, label: "Twitter" },
+            ].map(({ Icon, label }) => (
               <a
-                key={i}
+                key={label}
                 href="#"
+                aria-label={label}
                 className="h-10 w-10 rounded-full border border-border flex items-center justify-center hover:border-primary hover:text-primary hover:bg-primary/10 transition-all"
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4" aria-hidden="true" />
               </a>
             ))}
           </div>

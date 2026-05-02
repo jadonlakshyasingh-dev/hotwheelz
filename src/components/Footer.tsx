@@ -23,7 +23,7 @@ export function Footer() {
             { title: "Crew", links: ["About", "Contact", "Careers", "Press"] },
           ].map((c) => (
             <div key={c.title}>
-              <h4 className="font-display text-sm uppercase tracking-widest text-primary mb-4">{c.title}</h4>
+              <h3 className="font-display text-sm uppercase tracking-widest text-primary mb-4">{c.title}</h3>
               <ul className="space-y-2">
                 {c.links.map((l) => (
                   <li key={l}>

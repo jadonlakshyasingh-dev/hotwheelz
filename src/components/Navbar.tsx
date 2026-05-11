@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield, UserCog } from "lucide-react";
+import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield, UserCog, Package } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { useAuth } from "@/context/AuthContext";

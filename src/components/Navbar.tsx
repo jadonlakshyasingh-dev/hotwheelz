@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield, UserCog } from "lucide-react";
+import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOut, Shield, UserCog, Package } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { useAuth } from "@/context/AuthContext";
@@ -199,6 +199,12 @@ export function Navbar() {
                       <Link to="/profile" className="cursor-pointer">
                         <UserCog className="h-4 w-4 mr-2" />
                         Edit profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/orders" className="cursor-pointer">
+                        <Package className="h-4 w-4 mr-2" />
+                        My orders
                       </Link>
                     </DropdownMenuItem>
                     {isAdmin && (

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 import {
   Sheet,
   SheetContent,
@@ -24,7 +27,10 @@ import { toast } from "sonner";
 
 export function CartDrawer() {
   const { items, isOpen, setOpen, updateQty, removeItem, subtotal, count, clear } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [form, setForm] = useState({
@@ -54,21 +60,67 @@ export function CartDrawer() {
     {},
   );
 
-  const submitOrder = (e: React.FormEvent) => {
+  const submitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    const id =
-      "HW-" +
-      Math.random().toString(36).slice(2, 7).toUpperCase() +
-      "-" +
-      Date.now().toString().slice(-4);
-    setOrderId(id);
-    setCheckoutOpen(false);
-    setConfirmOpen(true);
-    clear();
-    setOpen(false);
-    toast.success("Order placed!", {
-      description: `Confirmation ${id} sent to ${form.email}`,
-    });
+    if (!user) {
+      toast.error("Sign in to place your order");
+      setCheckoutOpen(false);
+      setOpen(false);
+      navigate({ to: "/auth" });
+      return;
+    }
+    if (items.length === 0) return;
+    setSubmitting(true);
+    try {
+      const { data: orderRow, error: orderErr } = await supabase
+        .from("orders")
+        .insert({
+          user_id: user.id,
+          status: "paid",
+          subtotal,
+          shipping,
+          tax,
+          total,
+          currency: "USD",
+          shipping_name: form.name,
+          shipping_email: form.email,
+          shipping_address: form.address,
+          shipping_city: form.city,
+          shipping_zip: form.zip,
+          shipping_country: "US",
+        })
+        .select()
+        .single();
+      if (orderErr || !orderRow) throw orderErr ?? new Error("Failed to create order");
+
+      const itemRows = items.map((it) => ({
+        order_id: orderRow.id,
+        product_id: it.id,
+        product_name: it.name,
+        product_series: it.series,
+        product_img: it.img,
+        finish: it.finish ?? null,
+        qty: it.qty,
+        unit_price: it.price,
+        line_total: +(it.price * it.qty).toFixed(2),
+      }));
+      const { error: itemsErr } = await supabase.from("order_items").insert(itemRows);
+      if (itemsErr) throw itemsErr;
+
+      setOrderId(orderRow.id.slice(0, 8).toUpperCase());
+      setCheckoutOpen(false);
+      setConfirmOpen(true);
+      clear();
+      setOpen(false);
+      toast.success("Order placed!", {
+        description: `Confirmation sent to ${form.email}`,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Could not place order";
+      toast.error(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -417,9 +469,10 @@ export function CartDrawer() {
             <DialogFooter>
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-sm rounded-md shadow-flame hover:scale-[1.02] transition-transform"
+                disabled={submitting}
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-sm rounded-md shadow-flame hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Pay ${total.toFixed(2)}
+                {submitting ? "Processing…" : `Pay $${total.toFixed(2)}`}
               </button>
             </DialogFooter>
           </form>

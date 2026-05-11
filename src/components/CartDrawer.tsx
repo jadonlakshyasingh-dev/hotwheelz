@@ -60,21 +60,67 @@ export function CartDrawer() {
     {},
   );
 
-  const submitOrder = (e: React.FormEvent) => {
+  const submitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    const id =
-      "HW-" +
-      Math.random().toString(36).slice(2, 7).toUpperCase() +
-      "-" +
-      Date.now().toString().slice(-4);
-    setOrderId(id);
-    setCheckoutOpen(false);
-    setConfirmOpen(true);
-    clear();
-    setOpen(false);
-    toast.success("Order placed!", {
-      description: `Confirmation ${id} sent to ${form.email}`,
-    });
+    if (!user) {
+      toast.error("Sign in to place your order");
+      setCheckoutOpen(false);
+      setOpen(false);
+      navigate({ to: "/auth" });
+      return;
+    }
+    if (items.length === 0) return;
+    setSubmitting(true);
+    try {
+      const { data: orderRow, error: orderErr } = await supabase
+        .from("orders")
+        .insert({
+          user_id: user.id,
+          status: "paid",
+          subtotal,
+          shipping,
+          tax,
+          total,
+          currency: "USD",
+          shipping_name: form.name,
+          shipping_email: form.email,
+          shipping_address: form.address,
+          shipping_city: form.city,
+          shipping_zip: form.zip,
+          shipping_country: "US",
+        })
+        .select()
+        .single();
+      if (orderErr || !orderRow) throw orderErr ?? new Error("Failed to create order");
+
+      const itemRows = items.map((it) => ({
+        order_id: orderRow.id,
+        product_id: it.id,
+        product_name: it.name,
+        product_series: it.series,
+        product_img: it.img,
+        finish: it.finish ?? null,
+        qty: it.qty,
+        unit_price: it.price,
+        line_total: +(it.price * it.qty).toFixed(2),
+      }));
+      const { error: itemsErr } = await supabase.from("order_items").insert(itemRows);
+      if (itemsErr) throw itemsErr;
+
+      setOrderId(orderRow.id.slice(0, 8).toUpperCase());
+      setCheckoutOpen(false);
+      setConfirmOpen(true);
+      clear();
+      setOpen(false);
+      toast.success("Order placed!", {
+        description: `Confirmation sent to ${form.email}`,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Could not place order";
+      toast.error(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

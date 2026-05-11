@@ -201,6 +201,12 @@ export function Navbar() {
                         Edit profile
                       </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/orders" className="cursor-pointer">
+                        <Package className="h-4 w-4 mr-2" />
+                        My orders
+                      </Link>
+                    </DropdownMenuItem>
                     {isAdmin && (
                       <DropdownMenuItem asChild>
                         <Link to="/admin" className="cursor-pointer">

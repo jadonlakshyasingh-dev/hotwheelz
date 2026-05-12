@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -20,7 +20,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Flame, CheckCircle2, Sparkles } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Flame, CheckCircle2, Sparkles, Wallet as WalletIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
 import { finishStyles, type Finish } from "@/context/FinishContext";
 import { toast } from "sonner";
@@ -33,6 +34,9 @@ export function CartDrawer() {
   const [submitting, setSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [payMethod, setPayMethod] = useState<"card" | "wallet">("card");
+  const [wallet, setWallet] = useState<{ id: string; balance: number; is_connected: boolean; bank_name: string | null; bank_account_last4: string | null } | null>(null);
+  const [walletLoading, setWalletLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -43,6 +47,21 @@ export function CartDrawer() {
     exp: "",
     cvc: "",
   });
+
+  // Load wallet when checkout opens
+  useEffect(() => {
+    if (!checkoutOpen || !user) return;
+    setWalletLoading(true);
+    supabase
+      .from("wallets")
+      .select("id,balance,is_connected,bank_name,bank_account_last4")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        setWallet(data as typeof wallet);
+        setWalletLoading(false);
+      });
+  }, [checkoutOpen, user]);
 
   const shipping = subtotal > 50 || subtotal === 0 ? 0 : 4.99;
   const tax = +(subtotal * 0.08).toFixed(2);
@@ -70,6 +89,16 @@ export function CartDrawer() {
       return;
     }
     if (items.length === 0) return;
+    if (payMethod === "wallet") {
+      if (!wallet?.is_connected) {
+        toast.error("Connect a bank account in your wallet first");
+        return;
+      }
+      if (Number(wallet.balance) < total) {
+        toast.error("Insufficient wallet balance. Top up to continue.");
+        return;
+      }
+    }
     setSubmitting(true);
     try {
       const { data: orderRow, error: orderErr } = await supabase
@@ -106,6 +135,25 @@ export function CartDrawer() {
       }));
       const { error: itemsErr } = await supabase.from("order_items").insert(itemRows);
       if (itemsErr) throw itemsErr;
+
+      // Wallet debit
+      if (payMethod === "wallet" && wallet) {
+        const newBalance = +(Number(wallet.balance) - total).toFixed(2);
+        const { error: wErr } = await supabase
+          .from("wallets")
+          .update({ balance: newBalance })
+          .eq("user_id", user.id);
+        if (wErr) throw wErr;
+        await supabase.from("wallet_transactions").insert({
+          wallet_id: wallet.id,
+          user_id: user.id,
+          type: "purchase",
+          amount: total,
+          balance_after: newBalance,
+          description: `Order ${orderRow.id.slice(0, 8).toUpperCase()}`,
+          order_id: orderRow.id,
+        });
+      }
 
       setOrderId(orderRow.id.slice(0, 8).toUpperCase());
       setCheckoutOpen(false);
@@ -349,37 +397,93 @@ export function CartDrawer() {
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
                 />
               </div>
-              <div className="col-span-2">
-                <Label htmlFor="card">Card number</Label>
-                <Input
-                  id="card"
-                  required
-                  inputMode="numeric"
-                  placeholder="4242 4242 4242 4242"
-                  value={form.card}
-                  onChange={(e) => setForm({ ...form, card: e.target.value })}
-                />
+              <div className="col-span-2 space-y-2 pt-2">
+                <Label>Payment method</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPayMethod("card")}
+                    className={`p-3 rounded-lg border text-left text-xs transition ${payMethod === "card" ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}
+                  >
+                    <div className="flex items-center gap-2 font-display uppercase tracking-wider">
+                      <CreditCard className="h-3.5 w-3.5" /> Card
+                    </div>
+                    <div className="text-muted-foreground mt-1">Pay with card</div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPayMethod("wallet")}
+                    className={`p-3 rounded-lg border text-left text-xs transition ${payMethod === "wallet" ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}
+                  >
+                    <div className="flex items-center gap-2 font-display uppercase tracking-wider">
+                      <WalletIcon className="h-3.5 w-3.5" /> Wallet
+                    </div>
+                    <div className="text-muted-foreground mt-1">
+                      {walletLoading ? "…" : `Bal $${Number(wallet?.balance ?? 0).toFixed(2)}`}
+                    </div>
+                  </button>
+                </div>
+                {payMethod === "wallet" && !wallet?.is_connected && (
+                  <div className="text-xs text-destructive flex items-center gap-2">
+                    No bank linked.
+                    <Link
+                      to="/wallet"
+                      onClick={() => setCheckoutOpen(false)}
+                      className="underline"
+                    >
+                      Connect bank →
+                    </Link>
+                  </div>
+                )}
+                {payMethod === "wallet" && wallet?.is_connected && Number(wallet.balance) < total && (
+                  <div className="text-xs text-destructive flex items-center gap-2">
+                    Insufficient balance.
+                    <Link
+                      to="/wallet"
+                      onClick={() => setCheckoutOpen(false)}
+                      className="underline"
+                    >
+                      Top up →
+                    </Link>
+                  </div>
+                )}
               </div>
-              <div>
-                <Label htmlFor="exp">Expiry</Label>
-                <Input
-                  id="exp"
-                  required
-                  placeholder="MM/YY"
-                  value={form.exp}
-                  onChange={(e) => setForm({ ...form, exp: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="cvc">CVC</Label>
-                <Input
-                  id="cvc"
-                  required
-                  placeholder="123"
-                  value={form.cvc}
-                  onChange={(e) => setForm({ ...form, cvc: e.target.value })}
-                />
-              </div>
+
+              {payMethod === "card" && (
+                <>
+                  <div className="col-span-2">
+                    <Label htmlFor="card">Card number</Label>
+                    <Input
+                      id="card"
+                      required
+                      inputMode="numeric"
+                      placeholder="4242 4242 4242 4242"
+                      value={form.card}
+                      onChange={(e) => setForm({ ...form, card: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="exp">Expiry</Label>
+                    <Input
+                      id="exp"
+                      required
+                      placeholder="MM/YY"
+                      value={form.exp}
+                      onChange={(e) => setForm({ ...form, exp: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="cvc">CVC</Label>
+                    <Input
+                      id="cvc"
+                      required
+                      placeholder="123"
+                      value={form.cvc}
+                      onChange={(e) => setForm({ ...form, cvc: e.target.value })}
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-3 text-sm">
@@ -472,7 +576,7 @@ export function CartDrawer() {
                 disabled={submitting}
                 className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-sm rounded-md shadow-flame hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                {submitting ? "Processing…" : `Pay $${total.toFixed(2)}`}
+                {submitting ? "Processing…" : payMethod === "wallet" ? `Pay $${total.toFixed(2)} from wallet` : `Pay $${total.toFixed(2)}`}
               </button>
             </DialogFooter>
           </form>

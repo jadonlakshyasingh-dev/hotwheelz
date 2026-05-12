@@ -230,6 +230,92 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          description: string | null
+          id: string
+          order_id: string | null
+          type: Database["public"]["Enums"]["wallet_txn_type"]
+          user_id: string
+          wallet_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_id?: string | null
+          type: Database["public"]["Enums"]["wallet_txn_type"]
+          user_id: string
+          wallet_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_id?: string | null
+          type?: Database["public"]["Enums"]["wallet_txn_type"]
+          user_id?: string
+          wallet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          balance: number
+          bank_account_last4: string | null
+          bank_holder_name: string | null
+          bank_name: string | null
+          connected_at: string | null
+          created_at: string
+          currency: string
+          id: string
+          is_connected: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          bank_account_last4?: string | null
+          bank_holder_name?: string | null
+          bank_name?: string | null
+          connected_at?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          is_connected?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          bank_account_last4?: string | null
+          bank_holder_name?: string | null
+          bank_name?: string | null
+          connected_at?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          is_connected?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -246,6 +332,7 @@ export type Database = {
     Enums: {
       app_role: "admin" | "customer"
       order_status: "pending" | "paid" | "fulfilled" | "cancelled" | "refunded"
+      wallet_txn_type: "deposit" | "purchase" | "refund"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -375,6 +462,7 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "customer"],
       order_status: ["pending", "paid", "fulfilled", "cancelled", "refunded"],
+      wallet_txn_type: ["deposit", "purchase", "refund"],
     },
   },
 } as const

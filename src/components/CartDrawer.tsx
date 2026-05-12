@@ -89,6 +89,16 @@ export function CartDrawer() {
       return;
     }
     if (items.length === 0) return;
+    if (payMethod === "wallet") {
+      if (!wallet?.is_connected) {
+        toast.error("Connect a bank account in your wallet first");
+        return;
+      }
+      if (Number(wallet.balance) < total) {
+        toast.error("Insufficient wallet balance. Top up to continue.");
+        return;
+      }
+    }
     setSubmitting(true);
     try {
       const { data: orderRow, error: orderErr } = await supabase
@@ -125,6 +135,25 @@ export function CartDrawer() {
       }));
       const { error: itemsErr } = await supabase.from("order_items").insert(itemRows);
       if (itemsErr) throw itemsErr;
+
+      // Wallet debit
+      if (payMethod === "wallet" && wallet) {
+        const newBalance = +(Number(wallet.balance) - total).toFixed(2);
+        const { error: wErr } = await supabase
+          .from("wallets")
+          .update({ balance: newBalance })
+          .eq("user_id", user.id);
+        if (wErr) throw wErr;
+        await supabase.from("wallet_transactions").insert({
+          wallet_id: wallet.id,
+          user_id: user.id,
+          type: "purchase",
+          amount: total,
+          balance_after: newBalance,
+          description: `Order ${orderRow.id.slice(0, 8).toUpperCase()}`,
+          order_id: orderRow.id,
+        });
+      }
 
       setOrderId(orderRow.id.slice(0, 8).toUpperCase());
       setCheckoutOpen(false);

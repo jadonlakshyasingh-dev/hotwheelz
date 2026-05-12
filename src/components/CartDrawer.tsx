@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -48,10 +48,20 @@ export function CartDrawer() {
     cvc: "",
   });
 
-  // Load wallet whenever checkout opens
-  useState(() => {});
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffectLoadWallet(checkoutOpen, user?.id, setWallet, setWalletLoading);
+  // Load wallet when checkout opens
+  useEffect(() => {
+    if (!checkoutOpen || !user) return;
+    setWalletLoading(true);
+    supabase
+      .from("wallets")
+      .select("id,balance,is_connected,bank_name,bank_account_last4")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        setWallet(data as typeof wallet);
+        setWalletLoading(false);
+      });
+  }, [checkoutOpen, user]);
 
   const shipping = subtotal > 50 || subtotal === 0 ? 0 : 4.99;
   const tax = +(subtotal * 0.08).toFixed(2);

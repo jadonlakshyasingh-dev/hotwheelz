@@ -484,6 +484,7 @@ export function CartDrawer() {
                   </div>
                 </>
               )}
+            </div>
 
             <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-3 text-sm">
               <div>

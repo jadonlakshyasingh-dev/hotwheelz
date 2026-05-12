@@ -34,6 +34,9 @@ export function CartDrawer() {
   const [submitting, setSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [payMethod, setPayMethod] = useState<"card" | "wallet">("card");
+  const [wallet, setWallet] = useState<{ id: string; balance: number; is_connected: boolean; bank_name: string | null; bank_account_last4: string | null } | null>(null);
+  const [walletLoading, setWalletLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -44,6 +47,11 @@ export function CartDrawer() {
     exp: "",
     cvc: "",
   });
+
+  // Load wallet whenever checkout opens
+  useState(() => {});
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffectLoadWallet(checkoutOpen, user?.id, setWallet, setWalletLoading);
 
   const shipping = subtotal > 50 || subtotal === 0 ? 0 : 4.99;
   const tax = +(subtotal * 0.08).toFixed(2);

@@ -397,38 +397,93 @@ export function CartDrawer() {
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
                 />
               </div>
-              <div className="col-span-2">
-                <Label htmlFor="card">Card number</Label>
-                <Input
-                  id="card"
-                  required
-                  inputMode="numeric"
-                  placeholder="4242 4242 4242 4242"
-                  value={form.card}
-                  onChange={(e) => setForm({ ...form, card: e.target.value })}
-                />
+              <div className="col-span-2 space-y-2 pt-2">
+                <Label>Payment method</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPayMethod("card")}
+                    className={`p-3 rounded-lg border text-left text-xs transition ${payMethod === "card" ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}
+                  >
+                    <div className="flex items-center gap-2 font-display uppercase tracking-wider">
+                      <CreditCard className="h-3.5 w-3.5" /> Card
+                    </div>
+                    <div className="text-muted-foreground mt-1">Pay with card</div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPayMethod("wallet")}
+                    className={`p-3 rounded-lg border text-left text-xs transition ${payMethod === "wallet" ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}
+                  >
+                    <div className="flex items-center gap-2 font-display uppercase tracking-wider">
+                      <WalletIcon className="h-3.5 w-3.5" /> Wallet
+                    </div>
+                    <div className="text-muted-foreground mt-1">
+                      {walletLoading ? "…" : `Bal $${Number(wallet?.balance ?? 0).toFixed(2)}`}
+                    </div>
+                  </button>
+                </div>
+                {payMethod === "wallet" && !wallet?.is_connected && (
+                  <div className="text-xs text-destructive flex items-center gap-2">
+                    No bank linked.
+                    <Link
+                      to="/wallet"
+                      onClick={() => setCheckoutOpen(false)}
+                      className="underline"
+                    >
+                      Connect bank →
+                    </Link>
+                  </div>
+                )}
+                {payMethod === "wallet" && wallet?.is_connected && Number(wallet.balance) < total && (
+                  <div className="text-xs text-destructive flex items-center gap-2">
+                    Insufficient balance.
+                    <Link
+                      to="/wallet"
+                      onClick={() => setCheckoutOpen(false)}
+                      className="underline"
+                    >
+                      Top up →
+                    </Link>
+                  </div>
+                )}
               </div>
-              <div>
-                <Label htmlFor="exp">Expiry</Label>
-                <Input
-                  id="exp"
-                  required
-                  placeholder="MM/YY"
-                  value={form.exp}
-                  onChange={(e) => setForm({ ...form, exp: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="cvc">CVC</Label>
-                <Input
-                  id="cvc"
-                  required
-                  placeholder="123"
-                  value={form.cvc}
-                  onChange={(e) => setForm({ ...form, cvc: e.target.value })}
-                />
-              </div>
-            </div>
+
+              {payMethod === "card" && (
+                <>
+                  <div className="col-span-2">
+                    <Label htmlFor="card">Card number</Label>
+                    <Input
+                      id="card"
+                      required
+                      inputMode="numeric"
+                      placeholder="4242 4242 4242 4242"
+                      value={form.card}
+                      onChange={(e) => setForm({ ...form, card: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="exp">Expiry</Label>
+                    <Input
+                      id="exp"
+                      required
+                      placeholder="MM/YY"
+                      value={form.exp}
+                      onChange={(e) => setForm({ ...form, exp: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="cvc">CVC</Label>
+                    <Input
+                      id="cvc"
+                      required
+                      placeholder="123"
+                      value={form.cvc}
+                      onChange={(e) => setForm({ ...form, cvc: e.target.value })}
+                    />
+                  </div>
+                </>
+              )}
 
             <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-3 text-sm">
               <div>

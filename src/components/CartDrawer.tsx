@@ -560,20 +560,25 @@ export function CartDrawer() {
               <div className="border-t border-border pt-3 space-y-1">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Items ({count})</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? "Free" : format(shipping)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>{format(tax)}</span>
                 </div>
                 <div className="flex justify-between font-display text-lg pt-2 border-t border-border">
                   <span>Total</span>
-                  <span className="text-gradient-flame">${total.toFixed(2)}</span>
+                  <span className="text-gradient-flame">{format(total)}</span>
                 </div>
+                {currency !== "USD" && (
+                  <div className="text-[10px] text-muted-foreground text-right">
+                    ≈ ${total.toFixed(2)} USD (charged amount)
+                  </div>
+                )}
               </div>
             </div>
 

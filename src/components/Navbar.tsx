@@ -178,17 +178,22 @@ export function Navbar() {
               className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
               aria-label={
                 walletBalance != null
-                  ? `Wallet balance ${walletBalance.toFixed(2)} dollars`
+                  ? `Wallet balance ${format(walletBalance)}`
                   : "Open wallet"
               }
-              title={walletBalance != null ? `Wallet: $${walletBalance.toFixed(2)}` : "Wallet"}
+              title={walletBalance != null ? `Wallet: ${format(walletBalance)}` : "Wallet"}
             >
               <WalletIcon className="h-4 w-4" />
-              {walletBalance != null && (
-                <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-display flex items-center justify-center shadow-flame">
-                  ${walletBalance >= 1000 ? `${Math.floor(walletBalance / 1000)}k` : Math.round(walletBalance)}
-                </span>
-              )}
+              {walletBalance != null && (() => {
+                const local = walletBalance * rate;
+                const short =
+                  local >= 1000 ? `${Math.floor(local / 1000)}k` : Math.round(local).toString();
+                return (
+                  <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-display flex items-center justify-center shadow-flame">
+                    {symbol}{short}
+                  </span>
+                );
+              })()}
             </Link>
           )}
           <button

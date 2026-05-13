@@ -131,7 +131,7 @@ function OrdersPage() {
                         ×{it.qty}
                       </div>
                       <div className="font-display w-20 text-right">
-                        ${Number(it.line_total).toFixed(2)}
+                        {format(Number(it.line_total))}
                       </div>
                     </li>
                   ))}

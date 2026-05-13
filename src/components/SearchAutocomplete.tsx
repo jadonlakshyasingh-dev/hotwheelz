@@ -3,6 +3,7 @@ import { Flame, Tag } from "lucide-react";
 import { products, type Category } from "@/data/products";
 import { useSearch } from "@/context/SearchContext";
 import { useFinish } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 
 type Props = {
   onSelect?: () => void;

@@ -521,7 +521,7 @@ export function CartDrawer() {
                           )}
                         </span>
                         <span className="font-display whitespace-nowrap">
-                          ${(it.price * it.qty).toFixed(2)}
+                          {format(it.price * it.qty)}
                         </span>
                       </li>
                     );

@@ -31,6 +31,7 @@ const statusStyles: Record<string, string> = {
 function OrdersPage() {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [loading, setLoading] = useState(true);
+  const { format } = useCurrency();
 
   useEffect(() => {
     (async () => {

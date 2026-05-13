@@ -39,6 +39,39 @@ export function Navbar() {
   const { count, setOpen: openCart } = useCart();
   const { query, setQuery, clear, isActive, results } = useSearch();
   const { user, profile, isAdmin, signOut } = useAuth();
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setWalletBalance(null);
+      return;
+    }
+    let cancelled = false;
+    const load = async () => {
+      const { data } = await supabase
+        .from("wallets")
+        .select("balance")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!cancelled) setWalletBalance(data ? Number(data.balance) : 0);
+    };
+    void load();
+    const channel = supabase
+      .channel(`wallet-balance-${user.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "wallets", filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          const next = (payload.new as { balance?: number } | null)?.balance;
+          if (next != null) setWalletBalance(Number(next));
+        },
+      )
+      .subscribe();
+    return () => {
+      cancelled = true;
+      void supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {

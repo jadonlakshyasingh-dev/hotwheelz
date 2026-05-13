@@ -1,6 +1,7 @@
 import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { finishStyles } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { toast } from "sonner";
 import type { Product } from "@/data/products";
 

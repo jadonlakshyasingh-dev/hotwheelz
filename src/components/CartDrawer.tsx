@@ -232,11 +232,11 @@ export function CartDrawer() {
                         )}
                         <div className="flex items-baseline gap-2 mt-1">
                           <span className="text-gradient-flame font-display">
-                            ${(it.price * it.qty).toFixed(2)}
+                            {format(it.price * it.qty)}
                           </span>
                           {it.qty > 1 && (
                             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                              ${it.price.toFixed(2)} ea
+                              {format(it.price)} ea
                             </span>
                           )}
                         </div>

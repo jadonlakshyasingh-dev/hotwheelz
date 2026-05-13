@@ -2,6 +2,7 @@ import { useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useFinish, finishStyles } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { toast } from "sonner";
 import { newArrivals, products, type Product } from "@/data/products";
 

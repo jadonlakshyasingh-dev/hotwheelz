@@ -40,6 +40,7 @@ export function Navbar() {
   const { count, setOpen: openCart } = useCart();
   const { query, setQuery, clear, isActive, results } = useSearch();
   const { user, profile, isAdmin, signOut } = useAuth();
+  const { format, rate, symbol } = useCurrency();
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
   useEffect(() => {

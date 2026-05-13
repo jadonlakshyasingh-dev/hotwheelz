@@ -295,7 +295,7 @@ export function CartDrawer() {
                                 ×{info.qty}
                               </span>
                             </span>
-                            <span className="font-display">${info.total.toFixed(2)}</span>
+                            <span className="font-display">{format(info.total)}</span>
                           </div>
                         );
                       })}

@@ -548,7 +548,7 @@ export function CartDrawer() {
                           {style && <span>{style.icon}</span>}
                           {f}
                           <span className="text-muted-foreground normal-case tracking-normal">
-                            ×{info.qty} · ${info.total.toFixed(2)}
+                            ×{info.qty} · {format(info.total)}
                           </span>
                         </span>
                       );

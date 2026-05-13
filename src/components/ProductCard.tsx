@@ -86,7 +86,7 @@ export function ProductCard({ product, compact = false }: Props) {
             </h3>
           </div>
           <div className={`font-display ${compact ? "text-lg" : "text-2xl"} text-gradient-flame whitespace-nowrap`}>
-            ${product.price}
+            {format(product.price)}
           </div>
         </div>
 

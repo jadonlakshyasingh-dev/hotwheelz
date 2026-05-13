@@ -34,7 +34,7 @@ export function NewArrivals() {
     const itemFinish = c.material;
     addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img, finish: itemFinish });
     toast.success(`${c.name} added`, {
-      description: `${itemFinish} • $${c.price.toFixed(2)}`,
+      description: `${itemFinish} • ${format(c.price)}`,
     });
   };
 

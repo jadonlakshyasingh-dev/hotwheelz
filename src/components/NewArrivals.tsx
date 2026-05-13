@@ -105,7 +105,7 @@ export function NewArrivals() {
               <div className="text-[10px] uppercase tracking-widest text-primary">{c.series}</div>
               <div className="flex justify-between items-center mt-1">
                 <h3 className="font-display text-lg uppercase truncate">{c.name}</h3>
-                <span className="font-display text-gradient-flame">${c.price}</span>
+                <span className="font-display text-gradient-flame">{format(c.price)}</span>
               </div>
               <button
                 onClick={() => handleAdd(c)}

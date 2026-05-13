@@ -136,6 +136,16 @@ export function Navbar() {
           >
             <Search className="h-4 w-4" />
           </button>
+          {user && (
+            <Link
+              to="/wallet"
+              className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
+              aria-label="Open wallet"
+              title="Wallet"
+            >
+              <WalletIcon className="h-4 w-4" />
+            </Link>
+          )}
           <button
             onClick={() => openCart(true)}
             className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"

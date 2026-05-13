@@ -29,6 +29,7 @@ import { toast } from "sonner";
 
 export function CartDrawer() {
   const { items, isOpen, setOpen, updateQty, removeItem, subtotal, count, clear } = useCart();
+  const { format, currency } = useCurrency();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [checkoutOpen, setCheckoutOpen] = useState(false);

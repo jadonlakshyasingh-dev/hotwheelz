@@ -12,6 +12,7 @@ type Props = {
 
 export function ProductCard({ product, compact = false }: Props) {
   const { addItem, setOpen } = useCart();
+  const { format } = useCurrency();
   // Each card uses its own product material for its visual treatment,
   // so chrome cars always look chrome and metallic cars always look metallic.
   const cardFinish = product.material;

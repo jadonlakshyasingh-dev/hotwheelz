@@ -110,7 +110,7 @@ export function SearchAutocomplete({ onSelect, className = "" }: Props) {
                   )}
                 </div>
                 <div className="text-[11px] text-muted-foreground">
-                  {p.series} · ${p.price}
+                  {p.series} · {format(p.price)}
                 </div>
               </div>
             </button>

@@ -99,7 +99,7 @@ function OrdersPage() {
                       {o.status}
                     </span>
                     <div className="font-display text-lg text-gradient-flame mt-2">
-                      ${Number(o.total).toFixed(2)}
+                      {format(Number(o.total))}
                     </div>
                   </div>
                 </header>

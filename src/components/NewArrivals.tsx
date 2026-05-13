@@ -10,6 +10,7 @@ export function NewArrivals() {
   const ref = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
   const { finish } = useFinish();
+  const { format } = useCurrency();
   const fx = finishStyles[finish];
 
   const visible = useMemo<Product[]>(() => {

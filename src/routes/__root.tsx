@@ -3,6 +3,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { SearchProvider } from "@/context/SearchContext";
 import { FinishProvider } from "@/context/FinishContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 import { CartDrawer } from "@/components/CartDrawer";
 import { NeonScene } from "@/components/NeonScene";
 import { Toaster } from "@/components/ui/sonner";
@@ -84,16 +85,18 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <FinishProvider>
-          <SearchProvider>
-            <NeonScene />
-            <Outlet />
-            <CartDrawer />
-            <Toaster richColors position="top-right" />
-          </SearchProvider>
-        </FinishProvider>
-      </CartProvider>
+      <CurrencyProvider>
+        <CartProvider>
+          <FinishProvider>
+            <SearchProvider>
+              <NeonScene />
+              <Outlet />
+              <CartDrawer />
+              <Toaster richColors position="top-right" />
+            </SearchProvider>
+          </FinishProvider>
+        </CartProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

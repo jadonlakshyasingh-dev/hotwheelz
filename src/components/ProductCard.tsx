@@ -1,6 +1,7 @@
 import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { finishStyles } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { toast } from "sonner";
 import type { Product } from "@/data/products";
 
@@ -11,6 +12,7 @@ type Props = {
 
 export function ProductCard({ product, compact = false }: Props) {
   const { addItem, setOpen } = useCart();
+  const { format } = useCurrency();
   // Each card uses its own product material for its visual treatment,
   // so chrome cars always look chrome and metallic cars always look metallic.
   const cardFinish = product.material;
@@ -26,7 +28,7 @@ export function ProductCard({ product, compact = false }: Props) {
       finish: cardFinish,
     });
     toast.success(`${product.name} added to garage`, {
-      description: `${cardFinish} • $${product.price.toFixed(2)} • ${product.series}`,
+      description: `${cardFinish} • ${format(product.price)} • ${product.series}`,
     });
   };
 
@@ -84,7 +86,7 @@ export function ProductCard({ product, compact = false }: Props) {
             </h3>
           </div>
           <div className={`font-display ${compact ? "text-lg" : "text-2xl"} text-gradient-flame whitespace-nowrap`}>
-            ${product.price}
+            {format(product.price)}
           </div>
         </div>
 

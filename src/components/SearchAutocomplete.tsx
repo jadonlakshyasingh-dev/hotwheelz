@@ -3,6 +3,7 @@ import { Flame, Tag } from "lucide-react";
 import { products, type Category } from "@/data/products";
 import { useSearch } from "@/context/SearchContext";
 import { useFinish } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 
 type Props = {
   onSelect?: () => void;
@@ -14,6 +15,7 @@ const ALL_CATEGORIES: Category[] = ["Classic", "Supercar", "Limited"];
 export function SearchAutocomplete({ onSelect, className = "" }: Props) {
   const { query, setQuery } = useSearch();
   const { finish } = useFinish();
+  const { format } = useCurrency();
   const q = query.trim().toLowerCase();
 
   const { models, categories } = useMemo(() => {
@@ -108,7 +110,7 @@ export function SearchAutocomplete({ onSelect, className = "" }: Props) {
                   )}
                 </div>
                 <div className="text-[11px] text-muted-foreground">
-                  {p.series} · ${p.price}
+                  {p.series} · {format(p.price)}
                 </div>
               </div>
             </button>

@@ -2,6 +2,7 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Package, ChevronLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useCurrency } from "@/context/CurrencyContext";
 import type { Database } from "@/integrations/supabase/types";
 
 type OrderRow = Database["public"]["Tables"]["orders"]["Row"];
@@ -30,6 +31,7 @@ const statusStyles: Record<string, string> = {
 function OrdersPage() {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [loading, setLoading] = useState(true);
+  const { format } = useCurrency();
 
   useEffect(() => {
     (async () => {
@@ -97,7 +99,7 @@ function OrdersPage() {
                       {o.status}
                     </span>
                     <div className="font-display text-lg text-gradient-flame mt-2">
-                      ${Number(o.total).toFixed(2)}
+                      {format(Number(o.total))}
                     </div>
                   </div>
                 </header>
@@ -129,7 +131,7 @@ function OrdersPage() {
                         ×{it.qty}
                       </div>
                       <div className="font-display w-20 text-right">
-                        ${Number(it.line_total).toFixed(2)}
+                        {format(Number(it.line_total))}
                       </div>
                     </li>
                   ))}

@@ -2,6 +2,7 @@ import { useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useFinish, finishStyles } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { toast } from "sonner";
 import { newArrivals, products, type Product } from "@/data/products";
 
@@ -9,6 +10,7 @@ export function NewArrivals() {
   const ref = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
   const { finish } = useFinish();
+  const { format } = useCurrency();
   const fx = finishStyles[finish];
 
   const visible = useMemo<Product[]>(() => {
@@ -32,7 +34,7 @@ export function NewArrivals() {
     const itemFinish = c.material;
     addItem({ id: c.id, name: c.name, series: c.series, price: c.price, img: c.img, finish: itemFinish });
     toast.success(`${c.name} added`, {
-      description: `${itemFinish} • $${c.price.toFixed(2)}`,
+      description: `${itemFinish} • ${format(c.price)}`,
     });
   };
 
@@ -103,7 +105,7 @@ export function NewArrivals() {
               <div className="text-[10px] uppercase tracking-widest text-primary">{c.series}</div>
               <div className="flex justify-between items-center mt-1">
                 <h3 className="font-display text-lg uppercase truncate">{c.name}</h3>
-                <span className="font-display text-gradient-flame">${c.price}</span>
+                <span className="font-display text-gradient-flame">{format(c.price)}</span>
               </div>
               <button
                 onClick={() => handleAdd(c)}

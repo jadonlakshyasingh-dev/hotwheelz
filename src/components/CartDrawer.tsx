@@ -24,10 +24,12 @@ import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Flame, CheckCircle2, Spar
 import { Link } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
 import { finishStyles, type Finish } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { toast } from "sonner";
 
 export function CartDrawer() {
   const { items, isOpen, setOpen, updateQty, removeItem, subtotal, count, clear } = useCart();
+  const { format, currency } = useCurrency();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -230,11 +232,11 @@ export function CartDrawer() {
                         )}
                         <div className="flex items-baseline gap-2 mt-1">
                           <span className="text-gradient-flame font-display">
-                            ${(it.price * it.qty).toFixed(2)}
+                            {format(it.price * it.qty)}
                           </span>
                           {it.qty > 1 && (
                             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                              ${it.price.toFixed(2)} ea
+                              {format(it.price)} ea
                             </span>
                           )}
                         </div>
@@ -293,7 +295,7 @@ export function CartDrawer() {
                                 ×{info.qty}
                               </span>
                             </span>
-                            <span className="font-display">${info.total.toFixed(2)}</span>
+                            <span className="font-display">{format(info.total)}</span>
                           </div>
                         );
                       })}
@@ -303,20 +305,25 @@ export function CartDrawer() {
                 <div className="w-full space-y-1.5 text-sm">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{format(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
-                    <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                    <span>{shipping === 0 ? "Free" : format(shipping)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>{format(tax)}</span>
                   </div>
                   <div className="flex justify-between font-display text-lg pt-2 border-t border-border">
                     <span>Total</span>
-                    <span className="text-gradient-flame">${total.toFixed(2)}</span>
+                    <span className="text-gradient-flame">{format(total)}</span>
                   </div>
+                  {currency !== "USD" && (
+                    <div className="text-[10px] text-muted-foreground text-right pt-1">
+                      Converted from USD · charged in USD equivalent
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={() => setCheckoutOpen(true)}
@@ -419,7 +426,7 @@ export function CartDrawer() {
                       <WalletIcon className="h-3.5 w-3.5" /> Wallet
                     </div>
                     <div className="text-muted-foreground mt-1">
-                      {walletLoading ? "…" : `Bal $${Number(wallet?.balance ?? 0).toFixed(2)}`}
+                      {walletLoading ? "…" : `Bal ${format(Number(wallet?.balance ?? 0))}`}
                     </div>
                   </button>
                 </div>
@@ -514,7 +521,7 @@ export function CartDrawer() {
                           )}
                         </span>
                         <span className="font-display whitespace-nowrap">
-                          ${(it.price * it.qty).toFixed(2)}
+                          {format(it.price * it.qty)}
                         </span>
                       </li>
                     );
@@ -541,7 +548,7 @@ export function CartDrawer() {
                           {style && <span>{style.icon}</span>}
                           {f}
                           <span className="text-muted-foreground normal-case tracking-normal">
-                            ×{info.qty} · ${info.total.toFixed(2)}
+                            ×{info.qty} · {format(info.total)}
                           </span>
                         </span>
                       );
@@ -553,20 +560,25 @@ export function CartDrawer() {
               <div className="border-t border-border pt-3 space-y-1">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Items ({count})</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? "Free" : format(shipping)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>{format(tax)}</span>
                 </div>
                 <div className="flex justify-between font-display text-lg pt-2 border-t border-border">
                   <span>Total</span>
-                  <span className="text-gradient-flame">${total.toFixed(2)}</span>
+                  <span className="text-gradient-flame">{format(total)}</span>
                 </div>
+                {currency !== "USD" && (
+                  <div className="text-[10px] text-muted-foreground text-right">
+                    ≈ ${total.toFixed(2)} USD (charged amount)
+                  </div>
+                )}
               </div>
             </div>
 
@@ -576,7 +588,7 @@ export function CartDrawer() {
                 disabled={submitting}
                 className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-sm rounded-md shadow-flame hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                {submitting ? "Processing…" : payMethod === "wallet" ? `Pay $${total.toFixed(2)} from wallet` : `Pay $${total.toFixed(2)}`}
+                {submitting ? "Processing…" : payMethod === "wallet" ? `Pay ${format(total)} from wallet` : `Pay ${format(total)}`}
               </button>
             </DialogFooter>
           </form>

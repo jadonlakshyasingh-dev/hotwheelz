@@ -4,6 +4,7 @@ import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOu
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { FinishPicker } from "@/components/FinishPicker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

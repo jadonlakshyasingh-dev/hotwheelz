@@ -28,7 +28,7 @@ export function ProductCard({ product, compact = false }: Props) {
       finish: cardFinish,
     });
     toast.success(`${product.name} added to garage`, {
-      description: `${cardFinish} • $${product.price.toFixed(2)} • ${product.series}`,
+      description: `${cardFinish} • ${format(product.price)} • ${product.series}`,
     });
   };
 

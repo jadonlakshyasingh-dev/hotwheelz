@@ -24,6 +24,7 @@ import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Flame, CheckCircle2, Spar
 import { Link } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
 import { finishStyles, type Finish } from "@/context/FinishContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { toast } from "sonner";
 
 export function CartDrawer() {

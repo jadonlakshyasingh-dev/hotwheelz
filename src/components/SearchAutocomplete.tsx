@@ -15,6 +15,7 @@ const ALL_CATEGORIES: Category[] = ["Classic", "Supercar", "Limited"];
 export function SearchAutocomplete({ onSelect, className = "" }: Props) {
   const { query, setQuery } = useSearch();
   const { finish } = useFinish();
+  const { format } = useCurrency();
   const q = query.trim().toLowerCase();
 
   const { models, categories } = useMemo(() => {

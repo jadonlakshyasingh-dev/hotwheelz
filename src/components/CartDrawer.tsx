@@ -426,7 +426,7 @@ export function CartDrawer() {
                       <WalletIcon className="h-3.5 w-3.5" /> Wallet
                     </div>
                     <div className="text-muted-foreground mt-1">
-                      {walletLoading ? "…" : `Bal $${Number(wallet?.balance ?? 0).toFixed(2)}`}
+                      {walletLoading ? "…" : `Bal ${format(Number(wallet?.balance ?? 0))}`}
                     </div>
                   </button>
                 </div>

@@ -85,16 +85,18 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <FinishProvider>
-          <SearchProvider>
-            <NeonScene />
-            <Outlet />
-            <CartDrawer />
-            <Toaster richColors position="top-right" />
-          </SearchProvider>
-        </FinishProvider>
-      </CartProvider>
+      <CurrencyProvider>
+        <CartProvider>
+          <FinishProvider>
+            <SearchProvider>
+              <NeonScene />
+              <Outlet />
+              <CartDrawer />
+              <Toaster richColors position="top-right" />
+            </SearchProvider>
+          </FinishProvider>
+        </CartProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

@@ -588,7 +588,7 @@ export function CartDrawer() {
                 disabled={submitting}
                 className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-sm rounded-md shadow-flame hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                {submitting ? "Processing…" : payMethod === "wallet" ? `Pay $${total.toFixed(2)} from wallet` : `Pay $${total.toFixed(2)}`}
+                {submitting ? "Processing…" : payMethod === "wallet" ? `Pay ${format(total)} from wallet` : `Pay ${format(total)}`}
               </button>
             </DialogFooter>
           </form>

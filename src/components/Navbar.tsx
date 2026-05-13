@@ -4,6 +4,7 @@ import { Moon, Sun, Flame, Menu, X, ShoppingBag, Search, User as UserIcon, LogOu
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { FinishPicker } from "@/components/FinishPicker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -39,6 +40,39 @@ export function Navbar() {
   const { count, setOpen: openCart } = useCart();
   const { query, setQuery, clear, isActive, results } = useSearch();
   const { user, profile, isAdmin, signOut } = useAuth();
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setWalletBalance(null);
+      return;
+    }
+    let cancelled = false;
+    const load = async () => {
+      const { data } = await supabase
+        .from("wallets")
+        .select("balance")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (!cancelled) setWalletBalance(data ? Number(data.balance) : 0);
+    };
+    void load();
+    const channel = supabase
+      .channel(`wallet-balance-${user.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "wallets", filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          const next = (payload.new as { balance?: number } | null)?.balance;
+          if (next != null) setWalletBalance(Number(next));
+        },
+      )
+      .subscribe();
+    return () => {
+      cancelled = true;
+      void supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -139,11 +173,20 @@ export function Navbar() {
           {user && (
             <Link
               to="/wallet"
-              className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
-              aria-label="Open wallet"
-              title="Wallet"
+              className="relative p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"
+              aria-label={
+                walletBalance != null
+                  ? `Wallet balance ${walletBalance.toFixed(2)} dollars`
+                  : "Open wallet"
+              }
+              title={walletBalance != null ? `Wallet: $${walletBalance.toFixed(2)}` : "Wallet"}
             >
               <WalletIcon className="h-4 w-4" />
+              {walletBalance != null && (
+                <span className="absolute -top-1.5 -right-1.5 h-5 min-w-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-display flex items-center justify-center shadow-flame">
+                  ${walletBalance >= 1000 ? `${Math.floor(walletBalance / 1000)}k` : Math.round(walletBalance)}
+                </span>
+              )}
             </Link>
           )}
           <button

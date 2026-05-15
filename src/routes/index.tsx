@@ -14,7 +14,7 @@ import { useSearch } from "@/context/SearchContext";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Hotwheelz — Shop Premium Die-Cast Cars | Classics, Supercars & Limited" },
+      { title: "Hotwheelz — Shop Premium Die-Cast Cars" },
       {
         name: "description",
         content:
@@ -24,6 +24,32 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content: "Classic muscle, supercars, and rare limited collectibles. Shop the drop.",
+      },
+      { property: "og:url", content: "https://hotwheelz.lovable.app/" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://hotwheelz.lovable.app/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Hotwheelz",
+          url: "https://hotwheelz.lovable.app/",
+          description:
+            "Premium die-cast cars and racing tracks — classics, supercars, and rare limited editions.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Hotwheelz",
+          url: "https://hotwheelz.lovable.app/",
+        }),
       },
     ],
   }),

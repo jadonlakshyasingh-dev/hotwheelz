@@ -10,6 +10,7 @@ import { Newsletter } from "@/components/Newsletter";
 import { Footer } from "@/components/Footer";
 import { SearchResults } from "@/components/SearchResults";
 import { useSearch } from "@/context/SearchContext";
+import heroCar from "@/assets/hero-car.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://hotwheelz.lovable.app/" },
+      { rel: "preload", as: "image", href: heroCar, fetchpriority: "high" },
     ],
     scripts: [
       {

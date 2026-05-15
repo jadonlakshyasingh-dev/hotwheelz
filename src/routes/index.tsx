@@ -30,6 +30,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://hotwheelz.lovable.app/" },
+      { rel: "preload", as: "image", href: heroCar, fetchpriority: "high" },
     ],
     scripts: [
       {

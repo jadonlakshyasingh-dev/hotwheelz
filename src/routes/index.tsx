@@ -10,6 +10,7 @@ import { Newsletter } from "@/components/Newsletter";
 import { Footer } from "@/components/Footer";
 import { SearchResults } from "@/components/SearchResults";
 import { useSearch } from "@/context/SearchContext";
+import heroCar from "@/assets/hero-car.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({

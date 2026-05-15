@@ -1,0 +1,17 @@
+# Hotwheelz
+
+> Premium die-cast cars and racing tracks — classic muscle, modern supercars, Fast & Furious sagas, and rare limited-edition collectibles.
+
+Hotwheelz is an online store for collectors and enthusiasts. Browse curated collections, manage a wallet to fund purchases, and track orders from your account.
+
+## Pages
+
+- [Home](/): Featured cars, collections, new arrivals, and the latest drop.
+- [Sign in](/signin): Sign in to your Hotwheelz garage.
+- [Sign up](/signup): Create a Hotwheelz garage account.
+
+## Optional
+
+- [Orders](/orders): Order history (requires sign in).
+- [Wallet](/wallet): Manage wallet balance (requires sign in).
+- [Profile](/profile): Account profile (requires sign in).

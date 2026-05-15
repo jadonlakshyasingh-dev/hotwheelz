@@ -19,8 +19,19 @@ export const Route = createFileRoute("/signin")({
   head: () => ({
     meta: [
       { title: "Sign in — HotWheelz" },
-      { name: "description", content: "Sign in to your HotWheelz garage." },
+      {
+        name: "description",
+        content:
+          "Sign in to your HotWheelz garage to track orders, manage your wallet, and shop premium die-cast collectibles.",
+      },
+      { property: "og:title", content: "Sign in — HotWheelz" },
+      {
+        property: "og:description",
+        content: "Sign in to your HotWheelz garage to track orders and shop the drop.",
+      },
+      { property: "og:url", content: "https://hotwheelz.lovable.app/signin" },
     ],
+    links: [{ rel: "canonical", href: "https://hotwheelz.lovable.app/signin" }],
   }),
   beforeLoad: async () => {
     const { data } = await supabase.auth.getSession();

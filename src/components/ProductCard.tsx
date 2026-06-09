@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
-import { useCart } from "@/context/CartContext";
 import { finishStyles } from "@/context/FinishContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { toast } from "sonner";
+import { CarPreviewDialog } from "@/components/CarPreviewDialog";
 import type { Product } from "@/data/products";
 
 type Props = {
@@ -11,37 +11,17 @@ type Props = {
 };
 
 export function ProductCard({ product, compact = false }: Props) {
-  const { addItem, setOpen } = useCart();
   const { format } = useCurrency();
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [intent, setIntent] = useState<"add" | "buy">("add");
   // Each card uses its own product material for its visual treatment,
   // so chrome cars always look chrome and metallic cars always look metallic.
   const cardFinish = product.material;
   const fx = finishStyles[cardFinish];
 
-  const add = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      series: product.series,
-      price: product.price,
-      img: product.img,
-      finish: cardFinish,
-    });
-    toast.success(`${product.name} added to garage`, {
-      description: `${cardFinish} • ${format(product.price)} • ${product.series}`,
-    });
-  };
-
-  const buyNow = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      series: product.series,
-      price: product.price,
-      img: product.img,
-      finish: cardFinish,
-    });
-    setOpen(true);
+  const openPreview = (mode: "add" | "buy") => {
+    setIntent(mode);
+    setPreviewOpen(true);
   };
 
   return (
@@ -115,7 +95,7 @@ export function ProductCard({ product, compact = false }: Props) {
         <div className="grid grid-cols-2 gap-2 mt-auto">
           <button
             type="button"
-            onClick={add}
+            onClick={() => openPreview("add")}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 border border-primary/40 hover:bg-primary/10 hover:border-primary font-display uppercase tracking-wider text-[11px] rounded-md transition-all"
           >
             <ShoppingBag className="h-3.5 w-3.5" />
@@ -123,7 +103,7 @@ export function ProductCard({ product, compact = false }: Props) {
           </button>
           <button
             type="button"
-            onClick={buyNow}
+            onClick={() => openPreview("buy")}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-[11px] rounded-md hover:scale-[1.03] transition-transform shadow-flame"
           >
             <Zap className="h-3.5 w-3.5" />
@@ -132,6 +112,12 @@ export function ProductCard({ product, compact = false }: Props) {
         </div>
       </div>
     </article>
+    <CarPreviewDialog
+      product={product}
+      open={previewOpen}
+      onOpenChange={setPreviewOpen}
+      intent={intent}
+    />
     </div>
   );
 }

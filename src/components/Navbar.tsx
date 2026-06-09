@@ -166,6 +166,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 flex-shrink-0">
           <FinishPicker className="hidden xl:inline-flex" />
+          <CurrencyPicker className="hidden sm:inline-flex" />
           <button
             onClick={() => setSearchOpen((v) => !v)}
             className="md:hidden p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-all"

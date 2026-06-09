@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Flame, Star, ShoppingBag, Zap } from "lucide-react";
-import { useCart } from "@/context/CartContext";
 import { finishStyles } from "@/context/FinishContext";
 import { useCurrency } from "@/context/CurrencyContext";
-import { toast } from "sonner";
+import { CarPreviewDialog } from "@/components/CarPreviewDialog";
 import type { Product } from "@/data/products";
 
 type Props = {
@@ -11,37 +11,17 @@ type Props = {
 };
 
 export function ProductCard({ product, compact = false }: Props) {
-  const { addItem, setOpen } = useCart();
   const { format } = useCurrency();
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [intent, setIntent] = useState<"add" | "buy">("add");
   // Each card uses its own product material for its visual treatment,
   // so chrome cars always look chrome and metallic cars always look metallic.
   const cardFinish = product.material;
   const fx = finishStyles[cardFinish];
 
-  const add = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      series: product.series,
-      price: product.price,
-      img: product.img,
-      finish: cardFinish,
-    });
-    toast.success(`${product.name} added to garage`, {
-      description: `${cardFinish} • ${format(product.price)} • ${product.series}`,
-    });
-  };
-
-  const buyNow = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      series: product.series,
-      price: product.price,
-      img: product.img,
-      finish: cardFinish,
-    });
-    setOpen(true);
+  const openPreview = (mode: "add" | "buy") => {
+    setIntent(mode);
+    setPreviewOpen(true);
   };
 
   return (

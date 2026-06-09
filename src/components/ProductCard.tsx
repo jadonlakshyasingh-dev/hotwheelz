@@ -95,7 +95,7 @@ export function ProductCard({ product, compact = false }: Props) {
         <div className="grid grid-cols-2 gap-2 mt-auto">
           <button
             type="button"
-            onClick={add}
+            onClick={() => openPreview("add")}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 border border-primary/40 hover:bg-primary/10 hover:border-primary font-display uppercase tracking-wider text-[11px] rounded-md transition-all"
           >
             <ShoppingBag className="h-3.5 w-3.5" />
@@ -103,7 +103,7 @@ export function ProductCard({ product, compact = false }: Props) {
           </button>
           <button
             type="button"
-            onClick={buyNow}
+            onClick={() => openPreview("buy")}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 bg-flame text-primary-foreground font-display uppercase tracking-wider text-[11px] rounded-md hover:scale-[1.03] transition-transform shadow-flame"
           >
             <Zap className="h-3.5 w-3.5" />

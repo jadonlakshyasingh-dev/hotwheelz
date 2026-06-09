@@ -112,6 +112,12 @@ export function ProductCard({ product, compact = false }: Props) {
         </div>
       </div>
     </article>
+    <CarPreviewDialog
+      product={product}
+      open={previewOpen}
+      onOpenChange={setPreviewOpen}
+      intent={intent}
+    />
     </div>
   );
 }

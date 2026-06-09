@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCurrency } from "@/context/CurrencyContext";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { FinishPicker } from "@/components/FinishPicker";
+import { CurrencyPicker } from "@/components/CurrencyPicker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
